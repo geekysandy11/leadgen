@@ -82,6 +82,31 @@ export async function POST(req: Request) {
       })
     );
 
+    // 5. Dynamic Cell Alignment (Wrap Text) so Company and Address don't overflow
+    try {
+      await sheets.spreadsheets.batchUpdate({
+        spreadsheetId: sheetId,
+        requestBody: {
+          requests: [
+            {
+              repeatCell: {
+                range: { startColumnIndex: 0, endColumnIndex: 10 },
+                cell: {
+                  userEnteredFormat: {
+                    wrapStrategy: 'WRAP',
+                    verticalAlignment: 'TOP'
+                  }
+                },
+                fields: 'userEnteredFormat(wrapStrategy,verticalAlignment)',
+              }
+            }
+          ]
+        }
+      });
+    } catch (e) {
+      console.error("Format error:", e);
+    }
+
     return NextResponse.json({ success: true });
   } catch (error: unknown) {
     console.error("Save lead error:", error);

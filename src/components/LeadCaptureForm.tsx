@@ -17,21 +17,35 @@ interface TargetData {
 
 const emptyData: TargetData = { name: '', mobile: '', email: '', age: '', gender: 'N/A', address: '', company: '' };
 
-function TypewriterInput({ name, label, targetValue, type = "text", required = false }: { name: string, label: string, targetValue: string, type?: string, required?: boolean }) {
+function TypewriterInput({ name, label, targetValue, type = "text", required = false, as = "input" }: { name: string, label: string, targetValue: string, type?: string, required?: boolean, as?: 'input' | 'textarea' }) {
   const { text, handleManualChange } = useTypewriter(targetValue, 15);
+
+  const sharedClasses = "w-full px-4 py-3 rounded-xl bg-input border border-transparent focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm font-medium";
 
   return (
     <div className="mb-3">
       <label className="block text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wider">{label}</label>
-      <input
-        name={name}
-        type={type}
-        value={text}
-        onChange={(e) => handleManualChange(e.target.value)}
-        required={required}
-        className="w-full px-4 py-3 rounded-xl bg-input border border-transparent focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm font-medium"
-        placeholder={`Enter ${label.toLowerCase()}`}
-      />
+      {as === 'textarea' ? (
+        <textarea
+          name={name}
+          value={text}
+          onChange={(e) => handleManualChange(e.target.value)}
+          required={required}
+          className={`${sharedClasses} resize-none`}
+          placeholder={`Enter ${label.toLowerCase()}`}
+          rows={2}
+        />
+      ) : (
+        <input
+          name={name}
+          type={type}
+          value={text}
+          onChange={(e) => handleManualChange(e.target.value)}
+          required={required}
+          className={sharedClasses}
+          placeholder={`Enter ${label.toLowerCase()}`}
+        />
+      )}
     </div>
   );
 }
@@ -302,8 +316,8 @@ export function LeadCaptureForm() {
                   </select>
                 </div>
               </div>
-              <TypewriterInput name="company" label="Company" targetValue={targetData.company} />
-              <TypewriterInput name="address" label="Address" targetValue={targetData.address} />
+              <TypewriterInput name="company" label="Company" targetValue={targetData.company} as="textarea" />
+              <TypewriterInput name="address" label="Address" targetValue={targetData.address} as="textarea" />
 
               {/* Path 2 Smart Action Banner */}
               {needsPhoto && (
@@ -315,6 +329,9 @@ export function LeadCaptureForm() {
                    <div className="flex flex-col gap-2">
                      <button type="button" onClick={() => liveInputRef.current?.click()} className="w-full bg-white border border-yellow-300 text-yellow-800 py-3 rounded-xl font-bold text-sm hover:bg-yellow-100 transition-colors shadow-sm">
                        Capture Visitor Photo
+                     </button>
+                     <button type="submit" disabled={mode === 'saving'} className="flex items-center justify-center gap-2 text-yellow-700/70 hover:text-yellow-700 text-xs font-semibold py-2 transition-colors disabled:opacity-50">
+                       {mode === 'saving' ? <Loader2 className="w-3 h-3 animate-spin" /> : 'Submit without photo'} <ArrowRight className="w-3 h-3" />
                      </button>
                    </div>
                 </motion.div>
