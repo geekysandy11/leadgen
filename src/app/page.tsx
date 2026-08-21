@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { Zap, ArrowRight, FolderPlus, FileSpreadsheet, Rocket, Share2, Link2, Copy, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 
 export default function LandingPage() {
@@ -71,17 +71,17 @@ export default function LandingPage() {
   };
 
   // Animation variants
-  const fadeUp = {
+  const fadeUp: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
   };
 
-  const fadeLeft = {
+  const fadeLeft: Variants = {
     hidden: { opacity: 0, x: -40 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } }
   };
 
-  const fadeRight = {
+  const fadeRight: Variants = {
     hidden: { opacity: 0, x: 40 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } }
   };
