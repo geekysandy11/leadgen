@@ -84,11 +84,8 @@ export default function DashboardPage() {
   const filteredLeads = leads.filter(lead => {
     if (!searchQuery.trim()) return true;
     const q = searchQuery.toLowerCase();
-    return (
-      lead.Name?.toLowerCase().includes(q) ||
-      lead.Company?.toLowerCase().includes(q) ||
-      lead.Email?.toLowerCase().includes(q) ||
-      lead.Mobile?.toLowerCase().includes(q)
+    return Object.values(lead).some(val => 
+      String(val).toLowerCase().includes(q)
     );
   });
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from 'react';
-import { Camera, CheckCircle2, AlertCircle, ScanLine, ArrowLeft, Loader2, ImagePlus, Save } from 'lucide-react';
+import { Camera, CheckCircle2, AlertCircle, ScanLine, ArrowLeft, Loader2, ImagePlus, Save, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTypewriter } from '@/hooks/useTypewriter';
 
