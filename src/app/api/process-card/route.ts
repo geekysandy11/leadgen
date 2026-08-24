@@ -14,21 +14,21 @@ export async function POST(req: Request) {
     const groqApiKey = process.env.GROQ_API_KEY || "";
     
     const prompt = `
-      You are an elite AI extraction assistant designed to process business cards and IDs with 100% pixel-perfect accuracy.
-      Analyze this image carefully. You MUST transcribe text character-by-character. Do NOT guess or hallucinate. 
-      If a letter is C, do not write L. If a letter is N, do not write O.
-
+      You are an elite AI extraction assistant designed to process business cards and IDs with 100% accuracy.
+      Analyze this image carefully. You MUST output a PERFECTLY FORMATTED, STRICT JSON OBJECT.
+      
       Extraction Rules:
-      1. **Name**: Identify the person's name EXACTLY as printed. 
-      2. **Company**: Identify the company/store/brand name EXACTLY as printed. Look closely at logos.
-      3. **Mobile**: Extract ALL phone numbers. Preserve exact formatting including parentheses, dashes, plus signs, and country codes (e.g., (656)-8686-869, (44)- 6565-1423).
-      4. **Email**: Extract any email addresses containing '@'. Spelling must be flawless.
-      5. **Address**: Look for physical addresses. Preserve spacing, punctuation, and pin codes perfectly.
-      6. **Age & Gender**: Usually only present on IDs, leave blank if it's a standard business card.
-      7. **face_detected**: Set to true if you can see a human face/passport photo/headshot in the image. Set to false if the card has no face photo.
+      1. **Name**: The person's full name. Capitalize the first letter of each name.
+      2. **Company**: The company/brand name.
+      3. **Mobile**: Extract the phone number. CLEAN the formatting: remove all spaces, brackets, or dashes. Format it cleanly like +1234567890 or 1234567890. Ensure NO letters or weird characters are in the number.
+      4. **Email**: Extract the email address. Convert to all lowercase. Ensure absolutely flawless spelling.
+      5. **Address**: Cleanly format the physical address, comma-separated.
+      6. **Age & Gender**: Leave blank if not an ID.
+      7. **face_detected**: true or false boolean.
 
-      Return the result as a strict JSON object with EXACTLY these keys: "Name", "Email", "Mobile", "Age", "Gender", "Address", "Company", "face_detected".
-      If a field is missing, return an empty string "" for that field. face_detected must be a boolean (true or false). Do not include markdown formatting or backticks, just the raw JSON.
+      CRITICAL: Return ONLY a valid JSON object. No markdown, no backticks, no explanatory text.
+      The JSON MUST have EXACTLY these keys: "Name", "Email", "Mobile", "Age", "Gender", "Address", "Company", "face_detected".
+      If a field is missing, return an empty string "". 
     `;
 
     let extractedData;

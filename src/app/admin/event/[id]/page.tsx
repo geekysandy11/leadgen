@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import { ArrowLeft, ExternalLink, RefreshCw, Loader2, User, FileSpreadsheet, FolderOpen, Calendar, Sparkles } from 'lucide-react';
+import { useTypewriter } from '@/hooks/useTypewriter';
 
 interface EventData {
   eventId: string;
@@ -26,6 +27,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
   const [event, setEvent] = useState<EventData | null>(null);
   const [totalNumbers, setTotalNumbers] = useState(0);
   const [summary, setSummary] = useState('');
+  const { text: typedSummary } = useTypewriter(summary, 20);
   const [totalLeads, setTotalLeads] = useState(0);
   const [loadingEvent, setLoadingEvent] = useState(true);
   const [loadingSummary, setLoadingSummary] = useState(false);
@@ -152,7 +154,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
                 </div>
                 {summary && (
                   <div className="bg-primary/5 p-5 rounded-xl border border-primary/20 shadow-inner">
-                    <p className="text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap font-medium">{summary}</p>
+                    <p className="text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap font-medium">{typedSummary}</p>
                   </div>
                 )}
               </div>

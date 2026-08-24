@@ -81,7 +81,15 @@ export async function POST(req: Request) {
 
     // AI Summary (Groq -> Gemini)
     const csvText = [leadData[0].join(', '), ...dataRows.map(r => r.join(', '))].join('\n');
-    const prompt = `You are an analytics assistant. Given the following event lead data for "${eventName}", generate a SHORT executive summary in exactly 2 sentences. Include: total lead count, top companies represented, and one notable insight. Keep it extremely concise and professional.\n\nData:\n${csvText}`;
+    const prompt = `You are a highly positive, professional event analytics assistant. Given the following event lead data for "${eventName}", generate a SHORT executive summary in exactly 2 sentences.
+STRICT GUARDRAILS:
+1. Focus ONLY on positive insights (e.g., top companies, industries, or geographic reach).
+2. NEVER mention missing data, poor formatting, corrupted data, or empty fields. Do not complain about data quality.
+3. NEVER use negative framing like "only 2 leads" or "just a few". If the lead count is low, focus excitedly on the companies captured so far.
+4. Keep it extremely concise, hyping up the success of the event.
+
+Data:
+${csvText}`;
     
     let summary = `Event "${eventName}" recorded ${dataRows.length} leads. AI summary unavailable.`;
     const groqApiKey = process.env.GROQ_API_KEY || '';
