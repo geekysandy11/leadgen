@@ -25,9 +25,10 @@ export async function POST(req: Request) {
       4. **Email**: Extract any email addresses containing '@'. Spelling must be flawless.
       5. **Address**: Look for physical addresses. Preserve spacing, punctuation, and pin codes perfectly.
       6. **Age & Gender**: Usually only present on IDs, leave blank if it's a standard business card.
+      7. **face_detected**: Set to true if you can see a human face/passport photo/headshot in the image. Set to false if the card has no face photo.
 
-      Return the result as a strict JSON object with EXACTLY these keys: "Name", "Email", "Mobile", "Age", "Gender", "Address", "Company".
-      If a field is missing, return an empty string "" for that field. Do not include markdown formatting or backticks, just the raw JSON.
+      Return the result as a strict JSON object with EXACTLY these keys: "Name", "Email", "Mobile", "Age", "Gender", "Address", "Company", "face_detected".
+      If a field is missing, return an empty string "" for that field. face_detected must be a boolean (true or false). Do not include markdown formatting or backticks, just the raw JSON.
     `;
 
     let extractedData;
@@ -88,7 +89,7 @@ export async function POST(req: Request) {
         gender: extractedData.Gender || '',
         address: extractedData.Address || '',
         company: extractedData.Company || '',
-        face_detected: true, // Always true to bypass any strict frontend photo requirement
+        face_detected: extractedData.face_detected === true,
       }
     });
 

@@ -130,7 +130,7 @@ export function LeadCaptureForm() {
 
       if (!data.result.face_detected) {
         setNeedsPhoto(true);
-        setCardImageBase64(null); // Path 2: Discard card image immediately
+        // Card image kept for reference
       }
 
       setMode('form');
@@ -146,7 +146,7 @@ export function LeadCaptureForm() {
     setCardImageBase64(null);
     setLiveImageBase64(null);
     setLivePhotoPreview(null);
-    setNeedsPhoto(false);
+    setNeedsPhoto(true);
     setMode('form');
   };
 
@@ -299,8 +299,8 @@ export function LeadCaptureForm() {
                 )}
               </div>
 
-              <TypewriterInput name="name" label="Full Name" targetValue={targetData.name} required />
-              <TypewriterInput name="mobile" label="Mobile" targetValue={targetData.mobile} type="tel" required />
+              <TypewriterInput name="name" label="Full Name" targetValue={targetData.name} />
+              <TypewriterInput name="mobile" label="Mobile" targetValue={targetData.mobile} type="tel" />
               <TypewriterInput name="email" label="Email" targetValue={targetData.email} type="email" />
               <div className="grid grid-cols-2 gap-3 mb-3">
                 <TypewriterInput name="age" label="Age" targetValue={targetData.age} />
@@ -326,7 +326,7 @@ export function LeadCaptureForm() {
                 <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="mt-6 bg-yellow-50 border border-yellow-200 rounded-xl p-4 shadow-sm">
                    <div className="flex items-center gap-2 text-yellow-800 mb-3">
                      <Camera className="w-5 h-5" />
-                     <p className="font-semibold text-sm">No photo detected on card.</p>
+                     <p className="font-semibold text-sm">Want to capture a visitor photo?</p>
                    </div>
                    <div className="flex flex-col gap-2">
                      <button type="button" onClick={() => liveInputRef.current?.click()} className="w-full bg-white border border-yellow-300 text-yellow-800 py-3 rounded-xl font-bold text-sm hover:bg-yellow-100 transition-colors shadow-sm">
@@ -363,6 +363,8 @@ export function LeadCaptureForm() {
     </div>
   );
 }
+
+
 
 
 
