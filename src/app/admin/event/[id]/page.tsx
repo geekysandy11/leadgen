@@ -61,6 +61,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
       });
       const data = await res.json();
       if (data.totalNumbers !== undefined) setTotalNumbers(data.totalNumbers);
+      if (data.summary) setSummary(data.summary);
       if (data.totalLeads) setTotalLeads(data.totalLeads);
     } catch { toast.error('Failed to load stats'); }
     finally { setLoadingSummary(false); }

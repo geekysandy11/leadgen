@@ -23,6 +23,10 @@ export default function ScannerDashboardPage() {
       })
       .then(data => {
         if (data) {
+          if (data.role === 'admin') {
+             router.replace('/admin');
+             return;
+          }
           setSession(data);
           fetchRecentLeads();
         }
