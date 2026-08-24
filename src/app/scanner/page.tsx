@@ -73,12 +73,12 @@ export default function Home() {
     <main className="min-h-dvh bg-background text-foreground flex flex-col">
       <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-border/40 shadow-sm supports-[backdrop-filter]:bg-background/60">
         <div className="max-w-md mx-auto px-5 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3 min-w-0">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
             <div className="w-10 h-10 flex items-center justify-center shrink-0 relative overflow-hidden">
               <Image src="/logo.png" alt="Logo" fill className="object-contain scale-[2.5]" />
             </div>
             <div className="min-w-0">
-              <h1 className="text-lg font-bold tracking-tight text-foreground leading-none truncate">
+              <h1 className="text-base sm:text-lg font-bold tracking-tight text-foreground leading-tight line-clamp-2">
                 {typedEventName}
               </h1>
               <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider mt-0.5">The Catalysts Group</p>
@@ -95,8 +95,8 @@ export default function Home() {
 
           <div className="flex items-center gap-1 shrink-0">
             <Drawer>
-              <DrawerTrigger className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-10 w-10 rounded-full hover:bg-primary/10 hover:text-primary">
-                <History className="w-5 h-5" />
+              <DrawerTrigger className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 h-8 w-8 sm:h-10 sm:w-10 rounded-full hover:bg-primary/10 hover:text-primary [&_svg]:size-4 sm:[&_svg]:size-5">
+                <History className="w-4 h-4 sm:w-5 sm:h-5" />
               </DrawerTrigger>
               <DrawerContent className="sm:max-w-xl mx-auto max-h-[85vh]">
                 <DrawerHeader>
@@ -151,17 +151,17 @@ export default function Home() {
             </Drawer>
             <ThemeToggle />
             
-            <Button variant="ghost" size="icon" onClick={() => router.push('/')} className="h-10 w-10 rounded-full hover:bg-primary/10 hover:text-primary transition-colors">
-              <HomeIcon className="w-5 h-5" />
+            <Button variant="ghost" size="icon" onClick={() => router.push('/')} className="h-8 w-8 sm:h-10 sm:w-10 rounded-full hover:bg-primary/10 hover:text-primary transition-colors">
+              <HomeIcon className="w-4 h-4 sm:w-5 sm:h-5" />
             </Button>
 
             {session?.role === 'admin' && (
-              <Button variant="ghost" size="sm" onClick={() => router.push('/admin')} className="text-muted-foreground hover:bg-primary/10 hover:text-primary rounded-full transition-colors gap-2 px-3">
+              <Button variant="ghost" size="sm" onClick={() => router.push('/admin')} className="text-muted-foreground hover:bg-primary/10 hover:text-primary rounded-full transition-colors gap-1 sm:gap-2 px-2 sm:px-3 h-8 sm:h-10 text-xs sm:text-sm">
                 <LayoutDashboard className="w-4 h-4" /> <span className="hidden sm:inline">Admin</span>
               </Button>
             )}
-            <Button variant="ghost" size="icon" onClick={handleDisconnect} className="h-10 w-10 rounded-full hover:bg-red-50 hover:text-red-500 transition-colors">
-              <LogOut className="w-5 h-5" />
+            <Button variant="ghost" size="icon" onClick={handleDisconnect} className="h-8 w-8 sm:h-10 sm:w-10 rounded-full hover:bg-red-50 hover:text-red-500 transition-colors">
+              <LogOut className="w-4 h-4 sm:w-5 sm:h-5" />
             </Button>
           </div>
         </div>

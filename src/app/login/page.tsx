@@ -86,7 +86,7 @@ export default function LoginPage() {
                 </TabsList>
 
                 <AnimatePresence mode="wait">
-                  <TabsContent value="staff" className="space-y-6">
+                  <TabsContent value="staff" className="space-y-6" key="staff-tab">
                     <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3 }}>
                       <div className="mb-6">
                         <h2 className="text-xl font-bold mb-1.5">Staff Login</h2>
@@ -108,7 +108,7 @@ export default function LoginPage() {
                     </motion.div>
                   </TabsContent>
 
-                  <TabsContent value="admin" className="space-y-6">
+                  <TabsContent value="admin" className="space-y-6" key="admin-tab">
                     <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3 }}>
                       <div className="mb-6">
                         <h2 className="text-xl font-bold mb-1.5">Admin Login</h2>

@@ -146,7 +146,7 @@ export default function AdminPage() {
               </div>
               <DrawerFooter className="pt-2">
                 <Button onClick={handleCreate} disabled={creating} className="w-full h-12 rounded-lg">{creating ? <><Loader2 className="w-5 h-5 animate-spin mr-2" /> Creating...</> : 'Create Event'}</Button>
-                <DrawerClose><Button variant="outline" className="w-full h-12 rounded-lg" type="button">Cancel</Button></DrawerClose>
+                <DrawerClose className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground w-full h-12 rounded-lg" type="button">Cancel</DrawerClose>
               </DrawerFooter>
             </DrawerContent>
           </Drawer>
@@ -203,7 +203,7 @@ export default function AdminPage() {
           </div>
           <DrawerFooter className="pt-2">
             <Button onClick={handleEdit} disabled={editing} className="w-full h-12 rounded-lg">{editing ? <><Loader2 className="w-5 h-5 animate-spin mr-2" /> Saving...</> : 'Save Changes'}</Button>
-            <DrawerClose><Button variant="outline" className="w-full h-12 rounded-lg" type="button">Cancel</Button></DrawerClose>
+            <DrawerClose className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground w-full h-12 rounded-lg" type="button">Cancel</DrawerClose>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
