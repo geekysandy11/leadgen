@@ -72,7 +72,7 @@ export function LeadCaptureForm() {
         const canvas = document.createElement('canvas');
         let width = img.width;
         let height = img.height;
-        const maxDim = 2400;
+        const maxDim = 800;
 
         if (width > height && width > maxDim) {
           height *= maxDim / width;
@@ -88,7 +88,7 @@ export function LeadCaptureForm() {
         if (!ctx) return resolve(e.target?.result as string);
 
         ctx.drawImage(img, 0, 0, width, height);
-        resolve(canvas.toDataURL('image/jpeg', 1.0));
+        resolve(canvas.toDataURL('image/jpeg', 0.6));
       };
       img.onerror = reject;
     };
@@ -363,5 +363,6 @@ export function LeadCaptureForm() {
     </div>
   );
 }
+
 
 

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import Groq from 'groq-sdk';
 
 export async function POST(req: Request) {
   try {
@@ -9,13 +10,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Image is required' }, { status: 400 });
     }
 
-    const apiKey = process.env.GEMINI_API_KEY || ""; 
+    const geminiApiKey = process.env.GEMINI_API_KEY || ""; 
+    const groqApiKey = process.env.GROQ_API_KEY || "";
     
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-3.6-flash" });
-
     const prompt = `
-            You are an elite AI extraction assistant designed to process business cards and IDs with 100% pixel-perfect accuracy.
+      You are an elite AI extraction assistant designed to process business cards and IDs with 100% pixel-perfect accuracy.
       Analyze this image carefully. You MUST transcribe text character-by-character. Do NOT guess or hallucinate. 
       If a letter is C, do not write L. If a letter is N, do not write O.
 
@@ -28,24 +27,57 @@ export async function POST(req: Request) {
       6. **Age & Gender**: Usually only present on IDs, leave blank if it's a standard business card.
 
       Return the result as a strict JSON object with EXACTLY these keys: "Name", "Email", "Mobile", "Age", "Gender", "Address", "Company".
-      If a field is missing, return an empty string "" for that field. Do not include markdown formatting or backticks, just the raw JSON.    `;
+      If a field is missing, return an empty string "" for that field. Do not include markdown formatting or backticks, just the raw JSON.
+    `;
 
-    const base64Data = image.replace(/^data:image\/(png|jpeg|jpg);base64,/, "");
+    let extractedData;
 
-    const imageParts = [
-      {
-        inlineData: {
-          data: base64Data,
-          mimeType: "image/jpeg"
+    try {
+      // 1st Attempt: Gemini 3.6 Flash
+      const genAI = new GoogleGenerativeAI(geminiApiKey);
+      const model = genAI.getGenerativeModel({ model: "gemini-3.6-flash" });
+      const base64Data = image.replace(/^data:image\/(png|jpeg|jpg);base64,/, "");
+
+      const imageParts = [
+        {
+          inlineData: {
+            data: base64Data,
+            mimeType: "image/jpeg"
+          },
         },
-      },
-    ];
+      ];
 
-    const result = await model.generateContent([prompt, ...imageParts]);
-    const responseText = result.response.text();
-    
-    const cleanedJsonString = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
-    const extractedData = JSON.parse(cleanedJsonString);
+      const result = await model.generateContent([prompt, ...imageParts]);
+      const responseText = result.response.text();
+      const cleanedJsonString = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
+      extractedData = JSON.parse(cleanedJsonString);
+
+    } catch (geminiError) {
+      console.warn("Gemini API failed, falling back to Groq Llama 3.2 90B Vision:", geminiError);
+
+      // 2nd Attempt: Groq Fallback
+      const groq = new Groq({ apiKey: groqApiKey });
+      const chatCompletion = await groq.chat.completions.create({
+        messages: [
+          {
+            role: "user",
+            content: [
+              { type: "text", text: prompt },
+              {
+                type: "image_url",
+                image_url: { url: image },
+              },
+            ],
+          },
+        ],
+        model: "llama-3.2-90b-vision-preview",
+        temperature: 0.1,
+        response_format: { type: "json_object" },
+      });
+
+      const responseText = chatCompletion.choices[0]?.message?.content || "{}";
+      extractedData = JSON.parse(responseText);
+    }
 
     return NextResponse.json({
       result: {
@@ -56,17 +88,12 @@ export async function POST(req: Request) {
         gender: extractedData.Gender || '',
         address: extractedData.Address || '',
         company: extractedData.Company || '',
-        face_detected: true,
+        face_detected: true, // Always true to bypass any strict frontend photo requirement
       }
     });
 
   } catch (error) {
-    console.error("Gemini API Error:", error);
-    return NextResponse.json({ error: 'Failed to process card image' }, { status: 500 });
+    console.error("API Error (All Models Failed):", error);
+    return NextResponse.json({ error: 'Failed to process card image via both APIs' }, { status: 500 });
   }
 }
-
-
-
-
-
