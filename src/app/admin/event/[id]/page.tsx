@@ -55,6 +55,8 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
 
   const generateSummary = async (eventId: string) => {
     setLoadingSummary(true);
+    const minWaitTime = 5000; // 5 seconds fake loader
+    const startTime = Date.now();
     try {
       const res = await fetch('/api/admin/event-summary', {
         method: 'POST',
@@ -66,7 +68,14 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
       if (data.summary) setSummary(data.summary);
       if (data.totalLeads) setTotalLeads(data.totalLeads);
     } catch { toast.error('Failed to load stats'); }
-    finally { setLoadingSummary(false); }
+    finally { 
+      const elapsed = Date.now() - startTime;
+      if (elapsed < minWaitTime) {
+         setTimeout(() => setLoadingSummary(false), minWaitTime - elapsed);
+      } else {
+         setLoadingSummary(false); 
+      }
+    }
   };
 
   if (loadingEvent) {

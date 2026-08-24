@@ -85,7 +85,7 @@ export default function LoginPage() {
                   <TabsTrigger value="admin" className="gap-2 py-2.5 rounded-lg text-sm font-semibold data-[state=active]:shadow-none"><ShieldCheck className="w-4 h-4" /> Admin Login</TabsTrigger>
                 </TabsList>
 
-                <AnimatePresence mode="wait">
+                
                   <TabsContent value="staff" className="space-y-6" key="staff-tab">
                     <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3 }}>
                       <div className="mb-6">
@@ -129,7 +129,7 @@ export default function LoginPage() {
                       </div>
                     </motion.div>
                   </TabsContent>
-                </AnimatePresence>
+                
               </Tabs>
             </CardContent>
           </Card>
