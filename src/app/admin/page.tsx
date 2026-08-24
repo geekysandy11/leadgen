@@ -11,7 +11,7 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, Dr
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import { ThemeToggle } from '@/components/theme-toggle';
-import { Plus, LogOut, ExternalLink, Pencil, Eye, Copy, CheckCircle2, Loader2, Calendar, User, FileSpreadsheet, FolderOpen, Zap, Shield } from 'lucide-react';
+import { Plus, LogOut, ExternalLink, Pencil, Eye, Copy, CheckCircle2, Loader2, Calendar, User, FileSpreadsheet, FolderOpen, Zap, Shield, ScanLine } from 'lucide-react';
 
 interface EventData {
   eventId: string;
@@ -102,6 +102,9 @@ export default function AdminPage() {
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle />
+            <Button variant="ghost" size="sm" onClick={() => router.push('/scanner')} className="text-muted-foreground hover:bg-primary/10 hover:text-primary rounded-full transition-colors gap-2 px-3">
+              <ScanLine className="w-4 h-4" /> <span className="hidden sm:inline">Scanner</span>
+            </Button>
             <Button variant="ghost" size="icon" onClick={handleLogout} className="text-muted-foreground hover:bg-red-50 hover:text-red-500 rounded-full h-10 w-10 transition-colors"><LogOut className="w-5 h-5" /></Button>
           </div>
         </div>
@@ -123,21 +126,21 @@ export default function AdminPage() {
           <Badge variant="secondary" className="text-sm px-3 py-1.5 rounded-full border border-border/50 bg-muted/50 backdrop-blur-sm"><Zap className="w-3.5 h-3.5 mr-1.5 text-yellow-500" /> {events.length} Events</Badge>
           <Drawer open={createOpen} onOpenChange={setCreateOpen}>
             <Button className="gap-2 h-11 px-5 rounded-full shadow-md hover:shadow-lg transition-all" onClick={() => setCreateOpen(true)}><Plus className="w-4 h-4" /> New Event</Button>
-            <DrawerContent>
+            <DrawerContent className="sm:max-w-xl mx-auto">
               <DrawerHeader><DrawerTitle>Create New Event</DrawerTitle><DrawerDescription>Set up a new event with credentials and Google workspace links.</DrawerDescription></DrawerHeader>
               <div className="px-4 space-y-4 max-h-[60vh] overflow-y-auto pb-2">
-                <div className="space-y-1.5"><Label className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Event Name</Label><Input className="h-11 bg-muted/50 border-transparent focus:bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all rounded-lg" placeholder="e.g. TechCon 2026" value={newEvent.eventName} onChange={e => setNewEvent({...newEvent, eventName: e.target.value})} /></div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-1.5"><Label className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Username</Label><Input className="h-11 bg-muted/50 border-transparent focus:bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all rounded-lg" placeholder="staff_user" value={newEvent.username} onChange={e => setNewEvent({...newEvent, username: e.target.value})} /></div>
-                  <div className="space-y-1.5"><Label className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Password</Label><Input className="h-11 bg-muted/50 border-transparent focus:bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all rounded-lg" type="password" placeholder="Set password" value={newEvent.password} onChange={e => setNewEvent({...newEvent, password: e.target.value})} /></div>
+                <div className="space-y-2"><Label className="text-sm font-medium text-muted-foreground">Event Name</Label><Input className="h-12 bg-transparent border-border/50 focus:bg-background focus:border-ring focus:ring-1 transition-all rounded-lg" placeholder="e.g. TechCon 2026" value={newEvent.eventName} onChange={e => setNewEvent({...newEvent, eventName: e.target.value})} /></div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2"><Label className="text-sm font-medium text-muted-foreground">Username</Label><Input className="h-12 bg-transparent border-border/50 focus:bg-background focus:border-ring focus:ring-1 transition-all rounded-lg" placeholder="staff_user" value={newEvent.username} onChange={e => setNewEvent({...newEvent, username: e.target.value})} /></div>
+                  <div className="space-y-2"><Label className="text-sm font-medium text-muted-foreground">Password</Label><Input className="h-12 bg-transparent border-border/50 focus:bg-background focus:border-ring focus:ring-1 transition-all rounded-lg" type="password" placeholder="Set password" value={newEvent.password} onChange={e => setNewEvent({...newEvent, password: e.target.value})} /></div>
                 </div>
                 <Separator className="opacity-50" />
-                <div className="space-y-1.5"><Label className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Google Sheet URL or ID</Label><Input className="h-11 bg-muted/50 border-transparent focus:bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all rounded-lg" placeholder="Paste Sheet URL..." value={newEvent.sheetUrl} onChange={e => setNewEvent({...newEvent, sheetUrl: e.target.value})} /></div>
-                <div className="space-y-1.5"><Label className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Google Drive Folder URL or ID</Label><Input className="h-11 bg-muted/50 border-transparent focus:bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all rounded-lg" placeholder="Paste Folder URL..." value={newEvent.driveUrl} onChange={e => setNewEvent({...newEvent, driveUrl: e.target.value})} /></div>
+                <div className="space-y-2"><Label className="text-sm font-medium text-muted-foreground">Google Sheet URL or ID</Label><Input className="h-12 bg-transparent border-border/50 focus:bg-background focus:border-ring focus:ring-1 transition-all rounded-lg" placeholder="Paste Sheet URL..." value={newEvent.sheetUrl} onChange={e => setNewEvent({...newEvent, sheetUrl: e.target.value})} /></div>
+                <div className="space-y-2"><Label className="text-sm font-medium text-muted-foreground">Google Drive Folder URL or ID</Label><Input className="h-12 bg-transparent border-border/50 focus:bg-background focus:border-ring focus:ring-1 transition-all rounded-lg" placeholder="Paste Folder URL..." value={newEvent.driveUrl} onChange={e => setNewEvent({...newEvent, driveUrl: e.target.value})} /></div>
               </div>
               <DrawerFooter className="pt-2">
-                <Button onClick={handleCreate} disabled={creating} className="w-full h-11 rounded-lg">{creating ? <><Loader2 className="w-5 h-5 animate-spin mr-2" /> Creating...</> : 'Create Event'}</Button>
-                <DrawerClose><Button variant="outline" className="w-full h-11 rounded-lg" type="button">Cancel</Button></DrawerClose>
+                <Button onClick={handleCreate} disabled={creating} className="w-full h-12 rounded-lg">{creating ? <><Loader2 className="w-5 h-5 animate-spin mr-2" /> Creating...</> : 'Create Event'}</Button>
+                <DrawerClose><Button variant="outline" className="w-full h-12 rounded-lg" type="button">Cancel</Button></DrawerClose>
               </DrawerFooter>
             </DrawerContent>
           </Drawer>
@@ -180,21 +183,21 @@ export default function AdminPage() {
       </div>
 
       <Drawer open={editOpen} onOpenChange={setEditOpen}>
-        <DrawerContent>
+        <DrawerContent className="sm:max-w-xl mx-auto">
           <DrawerHeader><DrawerTitle>Edit Event</DrawerTitle><DrawerDescription>Update event credentials or workspace links. Leave password blank to keep unchanged.</DrawerDescription></DrawerHeader>
-          <div className="px-4 space-y-4 max-h-[60vh] overflow-y-auto">
-            <div className="space-y-1.5"><Label className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Event Name</Label><Input className="h-11 bg-muted/50 border-transparent focus:bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all rounded-lg" value={editEvent.eventName} onChange={e => setEditEvent({...editEvent, eventName: e.target.value})} /></div>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1.5"><Label className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Username</Label><Input className="h-11 bg-muted/50 border-transparent focus:bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all rounded-lg" value={editEvent.username} onChange={e => setEditEvent({...editEvent, username: e.target.value})} /></div>
-              <div className="space-y-1.5"><Label className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">New Password</Label><Input className="h-11 bg-muted/50 border-transparent focus:bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all rounded-lg" type="password" placeholder="Leave blank to keep" value={editEvent.password} onChange={e => setEditEvent({...editEvent, password: e.target.value})} /></div>
+          <div className="px-4 space-y-4 max-h-[60vh] overflow-y-auto pb-2">
+            <div className="space-y-2"><Label className="text-sm font-medium text-muted-foreground">Event Name</Label><Input className="h-12 bg-transparent border-border/50 focus:bg-background focus:border-ring focus:ring-1 transition-all rounded-lg" value={editEvent.eventName} onChange={e => setEditEvent({...editEvent, eventName: e.target.value})} /></div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2"><Label className="text-sm font-medium text-muted-foreground">Username</Label><Input className="h-12 bg-transparent border-border/50 focus:bg-background focus:border-ring focus:ring-1 transition-all rounded-lg" value={editEvent.username} onChange={e => setEditEvent({...editEvent, username: e.target.value})} /></div>
+              <div className="space-y-2"><Label className="text-sm font-medium text-muted-foreground">New Password</Label><Input className="h-12 bg-transparent border-border/50 focus:bg-background focus:border-ring focus:ring-1 transition-all rounded-lg" type="password" placeholder="Leave blank to keep" value={editEvent.password} onChange={e => setEditEvent({...editEvent, password: e.target.value})} /></div>
             </div>
             <Separator className="opacity-50" />
-            <div className="space-y-1.5"><Label className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Google Sheet URL or ID</Label><Input className="h-11 bg-muted/50 border-transparent focus:bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all rounded-lg" value={editEvent.sheetUrl} onChange={e => setEditEvent({...editEvent, sheetUrl: e.target.value})} /></div>
-            <div className="space-y-1.5"><Label className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Google Drive Folder URL or ID</Label><Input className="h-11 bg-muted/50 border-transparent focus:bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all rounded-lg" value={editEvent.driveUrl} onChange={e => setEditEvent({...editEvent, driveUrl: e.target.value})} /></div>
+            <div className="space-y-2"><Label className="text-sm font-medium text-muted-foreground">Google Sheet URL or ID</Label><Input className="h-12 bg-transparent border-border/50 focus:bg-background focus:border-ring focus:ring-1 transition-all rounded-lg" value={editEvent.sheetUrl} onChange={e => setEditEvent({...editEvent, sheetUrl: e.target.value})} /></div>
+            <div className="space-y-2"><Label className="text-sm font-medium text-muted-foreground">Google Drive Folder URL or ID</Label><Input className="h-12 bg-transparent border-border/50 focus:bg-background focus:border-ring focus:ring-1 transition-all rounded-lg" value={editEvent.driveUrl} onChange={e => setEditEvent({...editEvent, driveUrl: e.target.value})} /></div>
           </div>
           <DrawerFooter className="pt-2">
-            <Button onClick={handleEdit} disabled={editing} className="w-full h-11 rounded-lg">{editing ? <><Loader2 className="w-5 h-5 animate-spin mr-2" /> Saving...</> : 'Save Changes'}</Button>
-            <DrawerClose><Button variant="outline" className="w-full h-11 rounded-lg" type="button">Cancel</Button></DrawerClose>
+            <Button onClick={handleEdit} disabled={editing} className="w-full h-12 rounded-lg">{editing ? <><Loader2 className="w-5 h-5 animate-spin mr-2" /> Saving...</> : 'Save Changes'}</Button>
+            <DrawerClose><Button variant="outline" className="w-full h-12 rounded-lg" type="button">Cancel</Button></DrawerClose>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

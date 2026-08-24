@@ -109,7 +109,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true });
   } catch (error: unknown) {
-    console.error("Save lead error:", error);
-    return NextResponse.json({ error: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
+    console.error('Save lead error:', error);
+    return NextResponse.json({ error: 'Failed to save lead.' }, { status: 500 });
   }
 }

@@ -76,7 +76,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
       <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-border/40 shadow-sm supports-[backdrop-filter]:bg-background/60">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" onClick={() => router.push('/admin')} className="rounded-full hover:bg-muted"><ArrowLeft className="w-5 h-5" /></Button>
+            <Button variant="ghost" size="sm" onClick={() => router.push('/admin')} className="rounded-full hover:bg-muted gap-2 pr-4"><ArrowLeft className="w-4 h-4" /> Back</Button>
             <div>
               <h1 className="text-lg font-bold tracking-tight leading-none truncate">{event.eventName}</h1>
               <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider mt-0.5">Event Details</p>

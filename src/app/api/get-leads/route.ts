@@ -41,6 +41,6 @@ export async function GET() {
     });
   } catch (error: unknown) {
     console.error("get-leads error:", error);
-    return NextResponse.json({ error: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to fetch leads.' }, { status: 500 });
   }
 }

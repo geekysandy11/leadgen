@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from 'react';
-import { Camera, CheckCircle2, AlertCircle, ScanLine, ArrowLeft, Loader2, ImagePlus, Save, ArrowRight } from 'lucide-react';
+import { Camera, CheckCircle2, AlertCircle, ScanLine, ArrowLeft, Loader2, ImagePlus, Save, ArrowRight, Keyboard } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTypewriter } from '@/hooks/useTypewriter';
 
@@ -20,11 +20,11 @@ const emptyData: TargetData = { name: '', mobile: '', email: '', age: '', gender
 function TypewriterInput({ name, label, targetValue, type = "text", required = false, as = "input" }: { name: string, label: string, targetValue: string, type?: string, required?: boolean, as?: 'input' | 'textarea' }) {
   const { text, handleManualChange } = useTypewriter(targetValue, 15);
 
-  const sharedClasses = "w-full px-4 py-3 rounded-xl bg-muted/50 border border-transparent focus:bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all text-sm font-medium";
+  const sharedClasses = "h-12 w-full px-4 rounded-lg bg-transparent border border-border/50 focus:bg-background focus:border-ring focus:ring-1 focus:ring-ring outline-none transition-all text-sm font-medium";
 
   return (
-    <div className="mb-3">
-      <label className="block text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wider">{label}</label>
+    <div className="mb-4">
+      <label className="block text-sm font-medium text-muted-foreground mb-1.5">{label}</label>
       {as === 'textarea' ? (
         <textarea
           name={name}
@@ -158,6 +158,10 @@ export function LeadCaptureForm() {
       setLiveImageBase64(base64);
       setLivePhotoPreview(base64);
       setNeedsPhoto(false);
+      if (mode === 'idle') {
+        setTargetData(emptyData);
+        setMode('form');
+      }
     } catch (error) { console.error(error); }
   };
 
@@ -210,7 +214,7 @@ export function LeadCaptureForm() {
   );
 
   return (
-    <div className="w-full max-w-md mx-auto px-4 pt-6 pb-12 flex flex-col min-h-[calc(100vh-70px)]">
+    <div className="w-full max-w-md mx-auto px-4 pt-6 pb-6 flex flex-col">
 
       {/* Error Banner */}
       <AnimatePresence>
@@ -223,7 +227,7 @@ export function LeadCaptureForm() {
       </AnimatePresence>
 
       {/* Hidden Inputs */}
-      <input type="file" accept="image/*" capture="environment" ref={cardInputRef} onChange={handleCardCapture} className="hidden" />
+      <input type="file" accept="image/*" ref={cardInputRef} onChange={handleCardCapture} className="hidden" />
       <input type="file" accept="image/*" capture="environment" ref={liveInputRef} onChange={handleLiveCapture} className="hidden" />
 
       <AnimatePresence mode="wait">
@@ -233,13 +237,14 @@ export function LeadCaptureForm() {
 
             <button
               onClick={() => cardInputRef.current?.click()}
-              className="group relative flex flex-col items-center justify-center p-8 bg-card rounded-3xl shadow-sm border border-border hover:border-primary/50 transition-all active:scale-[0.98]"
+              className="group relative flex flex-col items-center justify-center p-8 bg-card/60 backdrop-blur-md rounded-3xl shadow-lg border border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 active:scale-[0.98]"
             >
-              <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl pointer-events-none" />
+              <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(var(--primary),0.15)] group-hover:shadow-[0_0_25px_rgba(var(--primary),0.3)] border border-primary/20">
                 <ScanLine className="w-8 h-8 text-primary" />
               </div>
               <h2 className="text-xl font-bold text-foreground">Scan Card</h2>
-              <p className="text-sm text-muted-foreground mt-1">AI auto-extracts data instantly</p>
+              <p className="text-sm text-muted-foreground mt-1 relative z-10">AI auto-extracts data instantly</p>
             </button>
 
             <div className="flex items-center gap-3">
@@ -250,13 +255,13 @@ export function LeadCaptureForm() {
 
             <button
               onClick={handleManualEntry}
-              className="flex items-center justify-center gap-3 p-5 bg-card rounded-2xl shadow-sm border border-border hover:border-primary/50 transition-all active:scale-[0.98]"
+              className="group flex items-center justify-center gap-4 p-5 bg-card/60 backdrop-blur-md rounded-2xl shadow-sm border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98]"
             >
-              <div className="w-10 h-10 bg-muted rounded-xl flex items-center justify-center">
-                <Camera className="w-5 h-5 text-foreground" />
+              <div className="w-10 h-10 bg-muted/80 rounded-xl flex items-center justify-center group-hover:bg-primary/10 transition-colors border border-border/50 group-hover:border-primary/20">
+                <Keyboard className="w-5 h-5 text-foreground group-hover:text-primary transition-colors" />
               </div>
               <div className="text-left">
-                <h3 className="font-bold text-foreground">Manual Entry</h3>
+                <h3 className="font-bold text-foreground group-hover:text-primary transition-colors">Manual Entry</h3>
                 <p className="text-xs text-muted-foreground">Type details & snap photo</p>
               </div>
             </button>
@@ -276,15 +281,16 @@ export function LeadCaptureForm() {
         {(mode === 'form' || mode === 'saving') && (
           <motion.div
             key="form"
-            initial={{ height: 0, opacity: 0, overflow: 'hidden' }}
-            animate={{ height: "auto", opacity: 1, overflow: 'visible' }}
-            exit={{ height: 0, opacity: 0, overflow: 'hidden' }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="flex flex-col"
+            initial={{ y: "100%", opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: "100%", opacity: 0 }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="flex flex-col mt-auto"
           >
             {mode !== 'saving' && <BackBtn />}
-            <form onSubmit={handleSave} className="bg-card rounded-3xl p-6 shadow-sm border border-border">
-              <div className="flex items-center justify-between mb-6">
+            <form onSubmit={handleSave} className="bg-card/90 backdrop-blur-xl rounded-t-[2rem] sm:rounded-3xl p-6 sm:p-8 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] border border-border/50 relative">
+              <div className="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-muted rounded-full sm:hidden" />
+              <div className="flex items-center justify-between mb-8 mt-2 sm:mt-0">
                 <h2 className="text-xl font-bold text-foreground">Enter Details</h2>
                 {livePhotoPreview && (
                   <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-primary">
@@ -305,11 +311,11 @@ export function LeadCaptureForm() {
               <div className="grid grid-cols-2 gap-3 mb-3">
                 <TypewriterInput name="age" label="Age" targetValue={targetData.age} />
                 <div>
-                  <label className="block text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wider">Gender</label>
+                  <label className="block text-sm font-medium text-muted-foreground mb-1.5">Gender</label>
                   <select
                     name="gender"
                     defaultValue={targetData.gender}
-                    className="w-full px-4 py-3 rounded-xl bg-muted/50 border border-transparent focus:bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all text-sm font-medium appearance-none"
+                    className="h-12 w-full px-4 rounded-lg bg-transparent border border-border/50 focus:bg-background focus:border-ring focus:ring-1 focus:ring-ring outline-none transition-all text-sm font-medium appearance-none"
                   >
                     <option value="N/A">N/A</option>
                     <option value="Male">Male</option>
@@ -323,16 +329,16 @@ export function LeadCaptureForm() {
 
               {/* Path 2 Smart Action Banner */}
               {needsPhoto && (
-                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="mt-6 bg-yellow-50 border border-yellow-200 rounded-xl p-4 shadow-sm">
-                   <div className="flex items-center gap-2 text-yellow-800 mb-3">
-                     <Camera className="w-5 h-5" />
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="mt-6 bg-card/40 backdrop-blur-md border border-border/50 rounded-xl p-4 shadow-sm">
+                   <div className="flex items-center gap-2 text-foreground mb-3">
+                     <Camera className="w-5 h-5 text-primary" />
                      <p className="font-semibold text-sm">Want to capture a visitor photo?</p>
                    </div>
                    <div className="flex flex-col gap-2">
-                     <button type="button" onClick={() => liveInputRef.current?.click()} className="w-full bg-white border border-yellow-300 text-yellow-800 py-3 rounded-xl font-bold text-sm hover:bg-yellow-100 transition-colors shadow-sm">
+                     <button type="button" onClick={() => liveInputRef.current?.click()} className="w-full bg-background border border-border/50 text-foreground py-3 rounded-xl font-bold text-sm hover:bg-accent hover:text-primary transition-colors shadow-sm">
                        Capture Visitor Photo
                      </button>
-                     <button type="submit" disabled={mode === 'saving'} className="flex items-center justify-center gap-2 text-yellow-700/70 hover:text-yellow-700 text-xs font-semibold py-2 transition-colors disabled:opacity-50">
+                     <button type="submit" disabled={mode === 'saving'} className="flex items-center justify-center gap-2 text-muted-foreground hover:text-foreground text-xs font-semibold py-2 transition-colors disabled:opacity-50">
                        {mode === 'saving' ? <Loader2 className="w-3 h-3 animate-spin" /> : 'Submit without photo'} <ArrowRight className="w-3 h-3" />
                      </button>
                    </div>
@@ -341,8 +347,8 @@ export function LeadCaptureForm() {
 
               {/* Default Save Button */}
               {!needsPhoto && (
-                <button type="submit" disabled={mode === 'saving'} className="w-full mt-6 bg-primary text-primary-foreground py-4 rounded-xl font-bold text-lg active:scale-[0.98] transition-transform disabled:opacity-70 flex items-center justify-center gap-2 shadow-md shadow-primary/20 hover:shadow-primary/30">
-                  {mode === 'saving' ? <><Loader2 className="w-5 h-5 animate-spin" /> Saving...</> : <><Save className="w-5 h-5" /> Save Lead</>}
+                <button type="submit" disabled={mode === 'saving'} className="w-full mt-8 bg-primary text-primary-foreground h-12 rounded-lg font-bold text-base transition-transform active:scale-[0.98] disabled:opacity-70 flex items-center justify-center gap-2">
+                  {mode === 'saving' ? <><Loader2 className="w-5 h-5 animate-spin" /> Saving...</> : 'Save Lead'}
                 </button>
               )}
             </form>
