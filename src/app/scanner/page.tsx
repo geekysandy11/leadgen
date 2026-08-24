@@ -78,10 +78,7 @@ export default function Home() {
               <Image src="/logo.png" alt="Logo" fill className="object-contain scale-[2.5]" />
             </div>
             <div className="min-w-0">
-              <h1 className="text-base sm:text-lg font-bold tracking-tight text-foreground leading-tight line-clamp-2">
-                {typedEventName}
-              </h1>
-              <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider mt-0.5">The Catalysts Group</p>
+              
               <div className="flex items-center gap-1.5 mt-0.5">
                 <div className="flex items-center gap-1 bg-green-500/10 text-green-500 px-1.5 py-0.5 rounded-md border border-green-500/20">
                   <User className="w-2.5 h-2.5" />

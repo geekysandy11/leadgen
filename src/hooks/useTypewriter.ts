@@ -25,7 +25,7 @@ export function useTypewriter(targetText: string, typingSpeed: number = 30) {
 
     if (indexRef.current < targetText.length) {
       const timeoutId = setTimeout(() => {
-        setText((prev) => prev + targetText.charAt(indexRef.current));
+        setText(targetText.substring(0, indexRef.current + 1));
         indexRef.current += 1;
       }, typingSpeed);
 
