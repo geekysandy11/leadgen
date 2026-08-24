@@ -73,75 +73,78 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
 
   return (
     <main className="min-h-dvh bg-background text-foreground">
-      <header className="sticky top-0 z-30 bg-card border-b border-border shadow-sm">
+      <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-border/40 shadow-sm supports-[backdrop-filter]:bg-background/60">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" onClick={() => router.push('/admin')}><ArrowLeft className="w-5 h-5" /></Button>
+            <Button variant="ghost" size="icon" onClick={() => router.push('/admin')} className="rounded-full hover:bg-muted"><ArrowLeft className="w-5 h-5" /></Button>
             <div>
               <h1 className="text-lg font-bold tracking-tight leading-none truncate">{event.eventName}</h1>
-              <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">Event Details</p>
+              <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider mt-0.5">Event Details</p>
             </div>
           </div>
-          <a href={`https://docs.google.com/spreadsheets/d/${event.sheetId}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 h-10 px-4 rounded-md border border-border text-sm font-medium hover:bg-accent transition-colors">
-            <ExternalLink className="w-4 h-4" /> Open Sheet
+          <a href={`https://docs.google.com/spreadsheets/d/${event.sheetId}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 h-10 px-4 rounded-full border border-border/50 bg-background hover:bg-accent hover:border-accent text-sm font-medium transition-all shadow-sm">
+            <ExternalLink className="w-4 h-4 text-emerald-500" /> Open Sheet
           </a>
         </div>
       </header>
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 space-y-6">
-        <Card>
-          <CardHeader>
+        <Card className="bg-card/40 backdrop-blur-sm border-border/60 shadow-lg overflow-hidden">
+          <CardHeader className="pb-4 bg-muted/20 border-b border-border/40">
             <div className="flex items-center justify-between">
               <CardTitle className="text-xl">{event.eventName}</CardTitle>
-              <Badge variant="outline" className="font-mono text-xs">{event.eventId}</Badge>
+              <Badge variant="outline" className="font-mono text-xs bg-background/50 border-border/50">{event.eventId}</Badge>
             </div>
             <CardDescription>Event configuration and workspace details</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 pt-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl">
-                <User className="w-5 h-5 text-primary shrink-0" />
-                <div><p className="text-[10px] text-muted-foreground uppercase font-semibold tracking-wider">Username</p><p className="text-sm font-bold">{event.username}</p></div>
+              <div className="flex items-center gap-3 p-4 bg-background border border-border/40 rounded-xl shadow-sm hover:shadow-md transition-shadow group">
+                <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform"><User className="w-5 h-5 text-blue-500" /></div>
+                <div><p className="text-[10px] text-muted-foreground uppercase font-semibold tracking-wider mb-0.5">Username</p><p className="text-sm font-bold">{event.username}</p></div>
               </div>
-              <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl">
-                <Calendar className="w-5 h-5 text-primary shrink-0" />
-                <div><p className="text-[10px] text-muted-foreground uppercase font-semibold tracking-wider">Created</p><p className="text-sm font-bold">{event.createdAt ? new Date(event.createdAt).toLocaleDateString() : 'N/A'}</p></div>
+              <div className="flex items-center gap-3 p-4 bg-background border border-border/40 rounded-xl shadow-sm hover:shadow-md transition-shadow group">
+                <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform"><Calendar className="w-5 h-5 text-purple-500" /></div>
+                <div><p className="text-[10px] text-muted-foreground uppercase font-semibold tracking-wider mb-0.5">Created</p><p className="text-sm font-bold">{event.createdAt ? new Date(event.createdAt).toLocaleDateString() : 'N/A'}</p></div>
               </div>
-              <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl">
-                <FileSpreadsheet className="w-5 h-5 text-primary shrink-0" />
-                <div className="min-w-0"><p className="text-[10px] text-muted-foreground uppercase font-semibold tracking-wider">Google Sheet</p><p className="text-sm font-bold truncate">{event.sheetTitle || event.sheetId}</p></div>
+              <div className="flex items-center gap-3 p-4 bg-background border border-border/40 rounded-xl shadow-sm hover:shadow-md transition-shadow group">
+                <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform"><FileSpreadsheet className="w-5 h-5 text-emerald-500" /></div>
+                <div className="min-w-0"><p className="text-[10px] text-muted-foreground uppercase font-semibold tracking-wider mb-0.5">Google Sheet</p><p className="text-sm font-bold truncate">{event.sheetTitle || event.sheetId}</p></div>
               </div>
-              <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl">
-                <FolderOpen className="w-5 h-5 text-primary shrink-0" />
-                <div className="min-w-0"><p className="text-[10px] text-muted-foreground uppercase font-semibold tracking-wider">Drive Folder</p><p className="text-sm font-bold truncate">{event.folderTitle || event.driveId}</p></div>
+              <div className="flex items-center gap-3 p-4 bg-background border border-border/40 rounded-xl shadow-sm hover:shadow-md transition-shadow group">
+                <div className="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform"><FolderOpen className="w-5 h-5 text-amber-500" /></div>
+                <div className="min-w-0"><p className="text-[10px] text-muted-foreground uppercase font-semibold tracking-wider mb-0.5">Drive Folder</p><p className="text-sm font-bold truncate">{event.folderTitle || event.driveId}</p></div>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-primary/20">
-          <CardHeader>
+        <Card className="relative overflow-hidden border-primary/30 shadow-[0_0_40px_rgba(var(--primary),0.1)]">
+          <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent pointer-events-none" />
+          <CardHeader className="relative z-10 pb-4">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-primary" />
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center"><Sparkles className="w-4 h-4 text-primary" /></div>
                 <CardTitle className="text-lg">AI Summary</CardTitle>
-                {totalLeads > 0 && <Badge variant="secondary" className="ml-2">{totalLeads} leads</Badge>}
+                {totalLeads > 0 && <Badge variant="secondary" className="ml-2 bg-background border-border/50 text-xs px-2 shadow-sm">{totalLeads} leads</Badge>}
               </div>
-              <Button variant="ghost" size="sm" onClick={() => generateSummary(event.eventId)} disabled={loadingSummary} className="gap-1.5">
-                <RefreshCw className={`w-4 h-4 ${loadingSummary ? 'animate-spin' : ''}`} /> Regenerate
+              <Button variant="ghost" size="sm" onClick={() => generateSummary(event.eventId)} disabled={loadingSummary} className="gap-1.5 rounded-full hover:bg-background shadow-sm border border-transparent hover:border-border/50 transition-all">
+                <RefreshCw className={`w-3.5 h-3.5 ${loadingSummary ? 'animate-spin text-primary' : ''}`} /> <span className="hidden sm:inline">Regenerate</span>
               </Button>
             </div>
           </CardHeader>
-          <Separator />
-          <CardContent className="pt-4">
+          <Separator className="opacity-50 relative z-10 mx-6 w-auto" />
+          <CardContent className="pt-6 relative z-10">
             {loadingSummary ? (
-              <div className="space-y-3">
-                <div className="h-4 bg-muted rounded-lg skeleton w-full" />
-                <div className="h-4 bg-muted rounded-lg skeleton w-4/5" />
-                <div className="h-4 bg-muted rounded-lg skeleton w-3/5" />
+              <div className="space-y-4">
+                <div className="h-4 bg-muted/60 rounded-md animate-pulse w-full" />
+                <div className="h-4 bg-muted/60 rounded-md animate-pulse w-5/6" />
+                <div className="h-4 bg-muted/60 rounded-md animate-pulse w-4/6" />
               </div>
             ) : (
-              <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">{summary || 'No summary available.'}</p>
+              <div className="bg-background/40 p-5 rounded-xl border border-border/30 shadow-inner backdrop-blur-sm">
+                <p className="text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap">{summary || 'No summary available.'}</p>
+              </div>
             )}
           </CardContent>
         </Card>

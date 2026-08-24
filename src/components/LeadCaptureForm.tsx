@@ -20,7 +20,7 @@ const emptyData: TargetData = { name: '', mobile: '', email: '', age: '', gender
 function TypewriterInput({ name, label, targetValue, type = "text", required = false, as = "input" }: { name: string, label: string, targetValue: string, type?: string, required?: boolean, as?: 'input' | 'textarea' }) {
   const { text, handleManualChange } = useTypewriter(targetValue, 15);
 
-  const sharedClasses = "w-full px-4 py-3 rounded-xl bg-input border border-transparent focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm font-medium";
+  const sharedClasses = "w-full px-4 py-3 rounded-xl bg-muted/50 border border-transparent focus:bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all text-sm font-medium";
 
   return (
     <div className="mb-3">
@@ -309,7 +309,7 @@ export function LeadCaptureForm() {
                   <select
                     name="gender"
                     defaultValue={targetData.gender}
-                    className="w-full px-4 py-3 rounded-xl bg-input border border-transparent focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm font-medium appearance-none"
+                    className="w-full px-4 py-3 rounded-xl bg-muted/50 border border-transparent focus:bg-background focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all text-sm font-medium appearance-none"
                   >
                     <option value="N/A">N/A</option>
                     <option value="Male">Male</option>
