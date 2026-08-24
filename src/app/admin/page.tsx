@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, DrawerFooter, DrawerClose } from '@/components/ui/drawer';
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
+import { ThemeToggle } from '@/components/theme-toggle';
 import { Plus, LogOut, ExternalLink, Pencil, Eye, Copy, CheckCircle2, Loader2, Calendar, User, FileSpreadsheet, FolderOpen, Zap, Shield } from 'lucide-react';
 
 interface EventData {
@@ -99,7 +100,9 @@ export default function AdminPage() {
             <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center"><Shield className="w-6 h-6 text-primary" /></div>
             <div><h1 className="text-lg font-bold tracking-tight leading-none">EventLead Admin</h1><p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">CRM Portal</p></div>
           </div>
-          <Button variant="ghost" size="icon" onClick={handleLogout} className="text-muted-foreground hover:text-red-500"><LogOut className="w-5 h-5" /></Button>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <Button variant="ghost" size="icon" onClick={handleLogout} className="text-muted-foreground hover:text-red-500"><LogOut className="w-5 h-5" /></Button>`n          </div>
         </div>
       </header>
 
@@ -191,5 +194,8 @@ export default function AdminPage() {
     </main>
   );
 }
+
+
+
 
 

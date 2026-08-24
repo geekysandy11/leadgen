@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";
 import { Button } from '@/components/ui/button';
-import { Zap, LayoutDashboard, LogOut, User } from "lucide-react";
+import { Zap, LayoutDashboard, LogOut, User } from 'lucide-react';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 interface SessionData {
   username: string;
@@ -62,7 +63,7 @@ export default function Home() {
           </div>
 
           <div className="flex items-center gap-1 shrink-0">
-            <Button variant="ghost" size="icon" onClick={() => router.push('/dashboard')} className="h-10 w-10">
+            <ThemeToggle />`n            <Button variant="ghost" size="icon" onClick={() => router.push('/dashboard')} className="h-10 w-10">
               <LayoutDashboard className="w-5 h-5 text-muted-foreground" />
             </Button>
             <Button variant="ghost" size="icon" onClick={handleDisconnect} className="h-10 w-10 hover:bg-red-50 hover:text-red-500">
@@ -76,3 +77,5 @@ export default function Home() {
     </main>
   );
 }
+
+
