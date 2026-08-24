@@ -3,21 +3,12 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { motion, AnimatePresence, Variants } from 'framer-motion';
-import { Zap, ArrowRight, FolderPlus, FileSpreadsheet, Rocket, Share2, Link2, Copy, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+import { motion, Variants } from 'framer-motion';
+import { Zap, ArrowRight, FolderPlus, FileSpreadsheet, Share2, Rocket, CheckCircle2 } from 'lucide-react';
 
 export default function LandingPage() {
   const router = useRouter();
   
-  // Login Form State
-  const [username, setUsername] = useState('');
-  const [sheetId, setSheetId] = useState('');
-  const [driveFolderId, setDriveFolderId] = useState('');
-  const [serviceEmail, setServiceEmail] = useState('');
-  const [copied, setCopied] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
-
   // Check session on mount to redirect early if already logged in
   useEffect(() => {
     fetch('/api/auth/session')
@@ -26,49 +17,6 @@ export default function LandingPage() {
       })
       .catch(() => {});
   }, [router]);
-
-  // Fetch service email on mount
-  useEffect(() => {
-    fetch('/api/auth/connect')
-      .then(res => res.json())
-      .then(data => {
-        if (data.serviceEmail) setServiceEmail(data.serviceEmail);
-      })
-      .catch(() => setServiceEmail('Error loading email'));
-  }, []);
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(serviceEmail);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const handleConnect = async () => {
-    if (!username.trim() || !sheetId.trim() || !driveFolderId.trim()) {
-      setErrorMsg('All fields are required.');
-      return;
-    }
-
-    setIsLoading(true);
-    setErrorMsg('');
-
-    try {
-      const res = await fetch('/api/auth/connect', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, sheetId, driveFolderId }),
-      });
-      const data = await res.json();
-
-      if (!res.ok) throw new Error(data.error || 'Connection failed');
-
-      router.push(data.redirectTo || '/scanner');
-    } catch (err: unknown) {
-      setErrorMsg(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   // Animation variants
   const fadeUp: Variants = {
@@ -122,12 +70,12 @@ export default function LandingPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <button 
-            onClick={() => document.getElementById('setup-form')?.scrollIntoView({ behavior: 'smooth' })}
+          <Link 
+            href="/login"
             className="inline-flex items-center justify-center gap-3 bg-primary text-primary-foreground py-3.5 px-8 lg:py-4 lg:px-10 rounded-xl lg:rounded-2xl font-bold text-base lg:text-lg hover:bg-primary/90 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/20"
           >
-            Start Setup Now <ArrowRight className="w-5 h-5 lg:w-6 lg:h-6" />
-          </button>
+            Sign In to Workspace <ArrowRight className="w-5 h-5 lg:w-6 lg:h-6" />
+          </Link>
         </motion.div>
       </header>
 
@@ -285,11 +233,11 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Phase 3: Launch (Actual Setup Form) */}
+        {/* Phase 3: Launch (Login Link) */}
         <section id="setup-form" className="scroll-mt-20 overflow-hidden py-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             
-            {/* The Login / Setup Form */}
+            {/* The Login Card CTA */}
             <motion.div 
               variants={fadeLeft}
               initial="hidden"
@@ -297,96 +245,25 @@ export default function LandingPage() {
               viewport={{ once: true, margin: "-100px" }}
               className="lg:col-span-6 relative order-2 lg:order-1"
             >
-              <div className="absolute inset-0 bg-purple-500/10 rounded-3xl lg:rounded-[2.5rem] transform -translate-x-3 translate-y-3 lg:-translate-x-4 lg:translate-y-4 -z-10"></div>
+              <div className="absolute inset-0 bg-primary/10 rounded-3xl lg:rounded-[2.5rem] transform -translate-x-3 translate-y-3 lg:-translate-x-4 lg:translate-y-4 -z-10"></div>
               
-              <div className="bg-card border-2 border-border rounded-3xl lg:rounded-[2.5rem] p-5 sm:p-8 shadow-xl lg:shadow-2xl relative z-10">
-                <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4 sm:p-5 mb-6">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Link2 className="w-4 h-4 text-primary" />
-                    <p className="text-sm font-bold text-primary">Final Check: Grant Access</p>
-                  </div>
-                  <p className="text-xs text-muted-foreground mb-3">
-                    Did you share your Sheet and Drive folder with this email as <strong>Editor</strong>?
+              <div className="bg-card border-2 border-border rounded-3xl lg:rounded-[2.5rem] p-8 sm:p-10 shadow-xl lg:shadow-2xl relative z-10 flex flex-col items-center justify-center text-center space-y-6">
+                <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-2">
+                  <Zap className="w-10 h-10 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold mb-2">Ready to Start?</h3>
+                  <p className="text-muted-foreground text-sm max-w-sm mx-auto">
+                    Log in with your event credentials provided by the admin, or access the CRM portal.
                   </p>
-                  <div className="flex items-center gap-2">
-                    <code className="flex-1 bg-background border border-border px-3 py-2 rounded-xl text-xs truncate select-all font-mono">
-                      {serviceEmail || 'Loading...'}
-                    </code>
-                    <button
-                      onClick={handleCopy}
-                      className="p-2 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-colors shrink-0"
-                    >
-                      {copied ? <CheckCircle2 className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                    </button>
-                  </div>
                 </div>
-
-                <AnimatePresence>
-                  {errorMsg && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -8 }}
-                      className="bg-red-50 text-red-600 border border-red-200 p-4 rounded-xl flex items-start gap-3 mb-5 shadow-sm"
-                    >
-                      <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
-                      <p className="text-sm font-medium">{errorMsg}</p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-bold text-muted-foreground mb-1.5 uppercase tracking-wider">
-                      Operator / Workspace Name
-                    </label>
-                    <input
-                      type="text"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      placeholder="e.g. John @ TechCon 2026"
-                      className="w-full px-4 py-3.5 rounded-xl bg-input border border-transparent focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm font-medium"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-muted-foreground mb-1.5 uppercase tracking-wider">
-                      Google Sheet URL
-                    </label>
-                    <input
-                      type="text"
-                      value={sheetId}
-                      onChange={(e) => setSheetId(e.target.value)}
-                      placeholder="Paste Sheet URL here..."
-                      className="w-full px-4 py-3.5 rounded-xl bg-input border border-transparent focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm font-medium"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-muted-foreground mb-1.5 uppercase tracking-wider">
-                      Google Drive Folder URL
-                    </label>
-                    <input
-                      type="text"
-                      value={driveFolderId}
-                      onChange={(e) => setDriveFolderId(e.target.value)}
-                      placeholder="Paste Drive Folder URL here..."
-                      className="w-full px-4 py-3.5 rounded-xl bg-input border border-transparent focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm font-medium"
-                    />
-                  </div>
-                </div>
-
-                <button
-                  onClick={handleConnect}
-                  disabled={isLoading}
-                  className="w-full mt-6 py-4 bg-primary text-primary-foreground font-bold text-lg rounded-2xl hover:bg-primary/90 active:scale-[0.98] transition-all disabled:opacity-70 flex items-center justify-center gap-2 shadow-lg shadow-primary/20"
+                
+                <Link
+                  href="/login"
+                  className="w-full py-4 bg-primary text-primary-foreground font-bold text-lg rounded-2xl hover:bg-primary/90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20 mt-4"
                 >
-                  {isLoading ? (
-                    <><Loader2 className="w-5 h-5 animate-spin" /> Initializing Workspace...</>
-                  ) : (
-                    <><Rocket className="w-5 h-5" /> Launch Scanner</>
-                  )}
-                </button>
+                  Go to Login <ArrowRight className="w-5 h-5" />
+                </Link>
               </div>
             </motion.div>
 
@@ -424,14 +301,13 @@ export default function LandingPage() {
 
       </div>
       
-      {/* Sticky Bottom Bar for mobile convenience */}
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-background/90 backdrop-blur-xl border-t border-border md:hidden z-50 flex justify-center">
-        <button 
-          onClick={() => document.getElementById('setup-form')?.scrollIntoView({ behavior: 'smooth' })}
+        <Link 
+          href="/login"
           className="flex items-center justify-center gap-2 w-full max-w-sm bg-primary text-primary-foreground py-4 rounded-xl font-bold text-lg active:scale-[0.98] transition-transform shadow-lg shadow-primary/20"
         >
-          Connect Workspace <ArrowRight className="w-5 h-5" />
-        </button>
+          Go to Login <ArrowRight className="w-5 h-5" />
+        </Link>
       </div>
     </main>
   );
