@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    const prompt = \
+    const prompt = `
       You are an expert at extracting structured data from business cards and IDs.
       Analyze this image carefully. Use visual cues like fonts, logos, and layout to differentiate information.
 
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
 
       Return the result as a strict JSON object with EXACTLY these keys: "Name", "Email", "Mobile", "Age", "Gender", "Address", "Company".
       If a field is missing, return an empty string "" for that field. Do not include markdown formatting or backticks, just the raw JSON.
-    \;
+    `;
 
     const base64Data = image.replace(/^data:image\/(png|jpeg|jpg);base64,/, "");
 
@@ -44,7 +44,7 @@ export async function POST(req: Request) {
     const result = await model.generateContent([prompt, ...imageParts]);
     const responseText = result.response.text();
     
-    const cleanedJsonString = responseText.replace(/`json/g, '').replace(/`/g, '').trim();
+    const cleanedJsonString = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
     const extractedData = JSON.parse(cleanedJsonString);
 
     return NextResponse.json({
@@ -65,5 +65,3 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Failed to process card image' }, { status: 500 });
   }
 }
-
-
