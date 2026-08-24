@@ -10,6 +10,19 @@ import { Zap, ArrowRight, FolderPlus, FileSpreadsheet, Share2, Rocket, CheckCirc
 
 export default function LandingPage() {
   const router = useRouter();
+  const [session, setSession] = useState<any>(null);
+
+  useEffect(() => {
+    fetch('/api/auth/session')
+      .then(res => {
+        if (res.ok) return res.json();
+        return null;
+      })
+      .then(data => {
+        if (data) setSession(data);
+      })
+      .catch(() => {});
+  }, []);
   
   
 
@@ -302,12 +315,21 @@ export default function LandingPage() {
       </div>
       
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-background/90 backdrop-blur-xl border-t border-border md:hidden z-50 flex justify-center">
-        <Link 
-          href="/login"
-          className="flex items-center justify-center gap-2 w-full max-w-sm bg-primary text-primary-foreground py-4 rounded-xl font-bold text-lg active:scale-[0.98] transition-transform shadow-lg shadow-primary/20"
-        >
-          Go to Login <ArrowRight className="w-5 h-5" />
-        </Link>
+        {session ? (
+          <button 
+            onClick={() => router.push('/scanner')}
+            className="flex items-center justify-center gap-2 w-full max-w-sm bg-primary text-primary-foreground py-4 rounded-xl font-bold text-lg active:scale-[0.98] transition-transform shadow-lg shadow-primary/20"
+          >
+            Go to Scanner <ArrowRight className="w-5 h-5" />
+          </button>
+        ) : (
+          <Link 
+            href="/login"
+            className="flex items-center justify-center gap-2 w-full max-w-sm bg-primary text-primary-foreground py-4 rounded-xl font-bold text-lg active:scale-[0.98] transition-transform shadow-lg shadow-primary/20"
+          >
+            Go to Login <ArrowRight className="w-5 h-5" />
+          </Link>
+        )}
       </div>
     </main>
   );
