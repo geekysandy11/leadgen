@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     const apiKey = process.env.GEMINI_API_KEY || ""; 
     
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-3.1-pro-preview" });
+    const model = genAI.getGenerativeModel({ model: "gemini-3.6-flash" });
 
     const prompt = `
             You are an elite AI extraction assistant designed to process business cards and IDs with 100% pixel-perfect accuracy.
@@ -65,6 +65,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Failed to process card image' }, { status: 500 });
   }
 }
+
 
 
 
