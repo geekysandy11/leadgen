@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";
 import { Button } from '@/components/ui/button';
-import { Zap, LayoutDashboard, LogOut, User, FileSpreadsheet, FolderOpen, Loader2, History } from 'lucide-react';
+import { Zap, LayoutDashboard, LogOut, User, FileSpreadsheet, FolderOpen, Loader2, History, HomeIcon } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { useTypewriter } from '@/hooks/useTypewriter';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -93,10 +93,8 @@ export default function Home() {
 
           <div className="flex items-center gap-1 shrink-0">
             <Drawer>
-              <DrawerTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full hover:bg-primary/10 hover:text-primary transition-colors">
-                  <History className="w-5 h-5" />
-                </Button>
+              <DrawerTrigger className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-10 w-10 rounded-full hover:bg-primary/10 hover:text-primary">
+                <History className="w-5 h-5" />
               </DrawerTrigger>
               <DrawerContent className="sm:max-w-xl mx-auto max-h-[85vh]">
                 <DrawerHeader>
@@ -150,6 +148,11 @@ export default function Home() {
               </DrawerContent>
             </Drawer>
             <ThemeToggle />
+            
+            <Button variant="ghost" size="icon" onClick={() => router.push('/')} className="h-10 w-10 rounded-full hover:bg-primary/10 hover:text-primary transition-colors">
+              <HomeIcon className="w-5 h-5" />
+            </Button>
+
             {session?.role === 'admin' && (
               <Button variant="ghost" size="sm" onClick={() => router.push('/admin')} className="text-muted-foreground hover:bg-primary/10 hover:text-primary rounded-full transition-colors gap-2 px-3">
                 <LayoutDashboard className="w-4 h-4" /> <span className="hidden sm:inline">Admin</span>

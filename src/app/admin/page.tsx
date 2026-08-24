@@ -11,7 +11,7 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, Dr
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import { ThemeToggle } from '@/components/theme-toggle';
-import { Plus, LogOut, ExternalLink, Pencil, Eye, Copy, CheckCircle2, Loader2, Calendar, User, FileSpreadsheet, FolderOpen, Zap, Shield, ScanLine } from 'lucide-react';
+import { Plus, LogOut, ExternalLink, Pencil, Eye, Copy, CheckCircle2, Loader2, Calendar, User, FileSpreadsheet, FolderOpen, Zap, Shield, ScanLine, HomeIcon } from 'lucide-react';
 
 interface EventData {
   eventId: string;
@@ -102,6 +102,9 @@ export default function AdminPage() {
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle />
+            <Button variant="ghost" size="icon" onClick={() => router.push('/')} className="text-muted-foreground hover:bg-primary/10 hover:text-primary rounded-full h-10 w-10 transition-colors">
+              <HomeIcon className="w-5 h-5" />
+            </Button>
             <Button variant="ghost" size="sm" onClick={() => router.push('/scanner')} className="text-muted-foreground hover:bg-primary/10 hover:text-primary rounded-full transition-colors gap-2 px-3">
               <ScanLine className="w-4 h-4" /> <span className="hidden sm:inline">Scanner</span>
             </Button>
