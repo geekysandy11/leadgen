@@ -67,21 +67,37 @@ export default function ScannerDashboardPage() {
         
         <section className="space-y-4">
           <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground px-1">Workspace Storage</h2>
-          <div className="flex flex-col gap-3">
-            <div className="flex flex-col gap-1.5 p-4 rounded-xl bg-muted/40 border border-border/50 shadow-sm">
-              <div className="flex items-center gap-2 text-emerald-500 mb-1">
-                <FileSpreadsheet className="w-4 h-4" />
-                <span className="text-xs font-bold uppercase tracking-wider">Target Sheet Name</span>
+          <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-1.5 p-5 rounded-xl bg-muted/40 border border-border/50 shadow-sm">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2 text-emerald-500">
+                  <FileSpreadsheet className="w-4 h-4" />
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider">Sheet Name</span>
+                </div>
+                {session?.sheetId && (
+                  <Button variant="outline" size="sm" className="h-6 text-[10px] px-2 py-0 gap-1 rounded border-blue-500/30 text-blue-500 hover:bg-blue-500/10 hover:text-blue-600 transition-colors" onClick={() => window.open(`https://docs.google.com/spreadsheets/d/${session.sheetId}`, '_blank')}>
+                    <FileSpreadsheet className="w-3 h-3" />
+                    Open Sheet
+                  </Button>
+                )}
               </div>
-              <span className="text-sm font-medium text-foreground truncate">{session?.sheetTitle || 'Loading...'}</span>
+              <span className="text-base font-medium text-foreground font-sans truncate">{session?.sheetTitle || 'Loading...'}</span>
             </div>
             
-            <div className="flex flex-col gap-1.5 p-4 rounded-xl bg-muted/40 border border-border/50 shadow-sm">
-              <div className="flex items-center gap-2 text-amber-500 mb-1">
-                <FolderOpen className="w-4 h-4" />
-                <span className="text-xs font-bold uppercase tracking-wider">Target Drive Folder</span>
+            <div className="flex flex-col gap-1.5 p-5 rounded-xl bg-muted/40 border border-border/50 shadow-sm">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2 text-amber-500">
+                  <FolderOpen className="w-4 h-4" />
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider">Folder Name</span>
+                </div>
+                {session?.folderId && (
+                  <Button variant="outline" size="sm" className="h-6 text-[10px] px-2 py-0 gap-1 rounded border-amber-500/30 text-amber-500 hover:bg-amber-500/10 hover:text-amber-600 transition-colors" onClick={() => window.open(`https://drive.google.com/drive/folders/${session.folderId}`, '_blank')}>
+                    <FolderOpen className="w-3 h-3" />
+                    Open Drive
+                  </Button>
+                )}
               </div>
-              <span className="text-sm font-medium text-foreground truncate">{session?.folderName || 'Loading...'}</span>
+              <span className="text-base font-medium text-foreground font-sans truncate">{session?.folderName || 'Loading...'}</span>
             </div>
           </div>
         </section>
@@ -103,7 +119,7 @@ export default function ScannerDashboardPage() {
                   {recentLeads.map((lead, idx) => (
                     <div key={idx} className="p-5 flex flex-col gap-1.5 hover:bg-muted/20 transition-colors">
                       <div className="flex items-center justify-between">
-                        <span className="text-base font-bold text-foreground">{lead.Name || lead.name || 'Unknown'}</span>
+                        <span className="text-base font-bold text-foreground font-serif tracking-tight">{lead.Name || lead.name || 'Unknown'}</span>
                         <Badge variant="secondary" className="bg-background/50 border-border/50 text-[9px] uppercase tracking-wider shadow-sm truncate max-w-[120px]">
                           {lead.Company || lead.company || 'No Company'}
                         </Badge>
