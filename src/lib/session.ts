@@ -7,6 +7,9 @@ export interface SessionPayload {
   folderId: string;
   sheetTitle: string;
   folderName: string;
+  role?: 'admin' | 'staff';
+  eventId?: string;
+  eventName?: string;
 }
 
 const COOKIE_NAME = 'leadgen_session';

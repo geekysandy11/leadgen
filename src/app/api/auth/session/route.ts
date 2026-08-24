@@ -12,5 +12,8 @@ export async function GET() {
     folderId: session.folderId,
     sheetTitle: session.sheetTitle,
     folderName: session.folderName,
+    role: session.role || 'staff',
+    eventId: session.eventId || '',
+    eventName: session.eventName || '',
   });
 }

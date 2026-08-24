@@ -3,12 +3,14 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";
+import { Button } from '@/components/ui/button';
 import { Zap, LayoutDashboard, LogOut, User } from "lucide-react";
 
 interface SessionData {
   username: string;
   sheetTitle: string;
   folderName: string;
+  eventName?: string;
 }
 
 export default function Home() {
@@ -35,16 +37,11 @@ export default function Home() {
   };
 
   if (checkingSession) {
-    return (
-      <main className="min-h-dvh bg-background flex items-center justify-center">
-        <div className="spinner w-10 h-10" />
-      </main>
-    );
+    return (<main className="min-h-dvh bg-background flex items-center justify-center"><div className="spinner w-10 h-10" /></main>);
   }
 
   return (
     <main className="min-h-dvh bg-background text-foreground">
-      {/* Header */}
       <header className="sticky top-0 z-30 bg-card border-b border-border shadow-sm">
         <div className="max-w-md mx-auto px-5 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3 min-w-0">
@@ -52,7 +49,9 @@ export default function Home() {
               <Zap className="w-6 h-6 text-primary" />
             </div>
             <div className="min-w-0">
-              <h1 className="text-lg font-bold tracking-tight text-foreground leading-none">EventLead</h1>
+              <h1 className="text-lg font-bold tracking-tight text-foreground leading-none">
+                {session?.eventName || 'EventLead'}
+              </h1>
               <div className="flex items-center gap-1.5 mt-1">
                 <User className="w-3 h-3 text-green-500" />
                 <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider truncate">
@@ -63,20 +62,12 @@ export default function Home() {
           </div>
 
           <div className="flex items-center gap-1 shrink-0">
-            <button
-              onClick={() => router.push('/dashboard')}
-              className="p-2 rounded-xl hover:bg-muted transition-colors"
-              title="Dashboard"
-            >
+            <Button variant="ghost" size="icon" onClick={() => router.push('/dashboard')} className="h-10 w-10">
               <LayoutDashboard className="w-5 h-5 text-muted-foreground" />
-            </button>
-            <button
-              onClick={handleDisconnect}
-              className="p-2 rounded-xl hover:bg-red-50 text-muted-foreground hover:text-red-500 transition-colors"
-              title="Disconnect"
-            >
+            </Button>
+            <Button variant="ghost" size="icon" onClick={handleDisconnect} className="h-10 w-10 hover:bg-red-50 hover:text-red-500">
               <LogOut className="w-5 h-5" />
-            </button>
+            </Button>
           </div>
         </div>
       </header>

@@ -2,216 +2,150 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Zap, Copy, CheckCircle2, AlertCircle, Loader2, ArrowRight, Link2 } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { toast } from 'sonner';
+import { Zap, Loader2, ArrowRight, Shield, User } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [username, setUsername] = useState('');
-  const [sheetId, setSheetId] = useState('');
-  const [driveFolderId, setDriveFolderId] = useState('');
-  const [serviceEmail, setServiceEmail] = useState('');
-  const [copied, setCopied] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
   const [checkingSession, setCheckingSession] = useState(true);
 
-  // Check if already logged in
+  // Staff login state
+  const [staffUsername, setStaffUsername] = useState('');
+  const [staffPassword, setStaffPassword] = useState('');
+  const [staffLoading, setStaffLoading] = useState(false);
+
+  // Admin login state
+  const [adminUsername, setAdminUsername] = useState('');
+  const [adminPassword, setAdminPassword] = useState('');
+  const [adminLoading, setAdminLoading] = useState(false);
+
   useEffect(() => {
     fetch('/api/auth/session')
       .then(res => {
-        if (res.ok) router.replace('/scanner');
-        else setCheckingSession(false);
+        if (res.ok) return res.json();
+        setCheckingSession(false);
+        return null;
+      })
+      .then(data => {
+        if (data) {
+          if (data.role === 'admin') router.replace('/admin');
+          else router.replace('/scanner');
+        }
       })
       .catch(() => setCheckingSession(false));
   }, [router]);
 
-  // Fetch service email
-  useEffect(() => {
-    fetch('/api/auth/connect')
-      .then(res => res.json())
-      .then(data => {
-        if (data.serviceEmail) setServiceEmail(data.serviceEmail);
-      })
-      .catch(() => setServiceEmail('Error loading email'));
-  }, []);
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(serviceEmail);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const handleConnect = async () => {
-    if (!username.trim() || !sheetId.trim() || !driveFolderId.trim()) {
-      setErrorMsg('All fields are required.');
-      return;
-    }
-
-    setIsLoading(true);
-    setErrorMsg('');
-
+  const handleStaffLogin = async () => {
+    if (!staffUsername.trim() || !staffPassword) { toast.error('Username and password are required.'); return; }
+    setStaffLoading(true);
     try {
-      const res = await fetch('/api/auth/connect', {
+      const res = await fetch('/api/auth/event-login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, sheetId, driveFolderId }),
+        body: JSON.stringify({ username: staffUsername, password: staffPassword }),
       });
       const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Login failed');
+      toast.success('Login successful!');
+      router.push(data.redirectTo || '/scanner');
+    } catch (err) { toast.error(err instanceof Error ? err.message : 'Login failed.'); }
+    finally { setStaffLoading(false); }
+  };
 
-      if (!res.ok) throw new Error(data.error || 'Connection failed');
-
-      router.push(data.redirectTo || '/');
-    } catch (err: unknown) {
-      setErrorMsg(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
-      setIsLoading(false);
-    }
+  const handleAdminLogin = async () => {
+    if (!adminUsername.trim() || !adminPassword) { toast.error('Username and password are required.'); return; }
+    setAdminLoading(true);
+    try {
+      const res = await fetch('/api/auth/admin-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: adminUsername, password: adminPassword }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Login failed');
+      toast.success('Welcome, Admin!');
+      router.push(data.redirectTo || '/admin');
+    } catch (err) { toast.error(err instanceof Error ? err.message : 'Login failed.'); }
+    finally { setAdminLoading(false); }
   };
 
   if (checkingSession) {
-    return (
-      <main className="min-h-dvh bg-background flex items-center justify-center">
-        <div className="spinner w-10 h-10" />
-      </main>
-    );
+    return (<main className="min-h-dvh bg-background flex items-center justify-center"><div className="spinner w-10 h-10" /></main>);
   }
 
   return (
-    <main className="min-h-dvh bg-background text-foreground flex flex-col">
-      {/* Header */}
-      <header className="pt-12 pb-6 px-6 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="flex items-center justify-center gap-3 mb-4"
-        >
-          <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
-            <Zap className="w-7 h-7 text-primary" />
+    <main className="min-h-dvh bg-background text-foreground flex flex-col items-center justify-center px-4 py-12">
+      <div className="w-full max-w-md space-y-8">
+        {/* Branding */}
+        <div className="text-center">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+              <Zap className="w-8 h-8 text-primary" />
+            </div>
           </div>
-        </motion.div>
-        <motion.h1
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1, duration: 0.5 }}
-          className="text-3xl font-extrabold tracking-tight"
-        >
-          EventLead
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-          className="text-sm text-muted-foreground mt-2"
-        >
-          Connect your workspace to start capturing leads
-        </motion.p>
-      </header>
-
-      {/* Form */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.5 }}
-        className="flex-1 px-5 pb-10 max-w-md mx-auto w-full"
-      >
-        {/* Step 1: Share Service Email */}
-        <div className="bg-primary/5 border border-primary/20 rounded-2xl p-5 mb-6">
-          <div className="flex items-center gap-2 mb-3">
-            <Link2 className="w-4 h-4 text-primary" />
-            <p className="text-sm font-bold text-primary">Step 1: Grant Access</p>
-          </div>
-          <p className="text-xs text-muted-foreground mb-3">
-            Share your Google Sheet and Drive Folder with this email as <strong>Editor</strong>.
-          </p>
-          <div className="flex items-center gap-2">
-            <code className="flex-1 bg-background border border-border px-3 py-2.5 rounded-xl text-xs truncate select-all font-mono">
-              {serviceEmail || 'Loading...'}
-            </code>
-            <button
-              onClick={handleCopy}
-              className="p-2.5 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-colors shrink-0"
-            >
-              {copied ? <CheckCircle2 className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-            </button>
-          </div>
+          <h1 className="text-3xl font-extrabold tracking-tight">EventLead</h1>
+          <p className="text-sm text-muted-foreground mt-2">Sign in to your account</p>
         </div>
 
-        {/* Error */}
-        <AnimatePresence>
-          {errorMsg && (
-            <motion.div
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              className="bg-red-50 text-red-600 border border-red-200 p-4 rounded-xl flex items-start gap-3 mb-5 shadow-sm"
-            >
-              <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
-              <p className="text-sm font-medium">{errorMsg}</p>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Login Card */}
+        <Card className="shadow-lg">
+          <CardContent className="pt-6">
+            <Tabs defaultValue="staff" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 mb-6">
+                <TabsTrigger value="staff" className="gap-2 h-11"><User className="w-4 h-4" /> Staff Login</TabsTrigger>
+                <TabsTrigger value="admin" className="gap-2 h-11"><Shield className="w-4 h-4" /> Admin Login</TabsTrigger>
+              </TabsList>
 
-        {/* Step 2: Inputs */}
-        <div className="space-y-4">
-          <div>
-            <label className="block text-xs font-bold text-muted-foreground mb-1.5 uppercase tracking-wider">
-              Step 2: Operator / Workspace Name
-            </label>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="e.g. John @ TechCon 2025"
-              className="w-full px-4 py-3.5 rounded-xl bg-input border border-transparent focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm font-medium"
-            />
-          </div>
+              {/* Staff Login Tab */}
+              <TabsContent value="staff" className="space-y-4">
+                <CardHeader className="px-0 pt-0">
+                  <CardTitle className="text-lg">Staff Login</CardTitle>
+                  <CardDescription>Enter your event credentials provided by the admin.</CardDescription>
+                </CardHeader>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="staff-username">Username</Label>
+                    <Input id="staff-username" placeholder="Enter your username" value={staffUsername} onChange={e => setStaffUsername(e.target.value)} className="h-12" onKeyDown={e => e.key === 'Enter' && handleStaffLogin()} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="staff-password">Password</Label>
+                    <Input id="staff-password" type="password" placeholder="Enter your password" value={staffPassword} onChange={e => setStaffPassword(e.target.value)} className="h-12" onKeyDown={e => e.key === 'Enter' && handleStaffLogin()} />
+                  </div>
+                  <Button onClick={handleStaffLogin} disabled={staffLoading} className="w-full h-12 text-base font-bold gap-2">
+                    {staffLoading ? <><Loader2 className="w-5 h-5 animate-spin" /> Signing in...</> : <>Sign In <ArrowRight className="w-5 h-5" /></>}
+                  </Button>
+                </div>
+              </TabsContent>
 
-          <div>
-            <label className="block text-xs font-bold text-muted-foreground mb-1.5 uppercase tracking-wider">
-              Step 3: Google Sheet ID or URL
-            </label>
-            <input
-              type="text"
-              value={sheetId}
-              onChange={(e) => setSheetId(e.target.value)}
-              placeholder="Paste Sheet URL or ID..."
-              className="w-full px-4 py-3.5 rounded-xl bg-input border border-transparent focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm font-medium"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-muted-foreground mb-1.5 uppercase tracking-wider">
-              Step 4: Google Drive Folder ID or URL
-            </label>
-            <input
-              type="text"
-              value={driveFolderId}
-              onChange={(e) => setDriveFolderId(e.target.value)}
-              placeholder="Paste Drive Folder URL or ID..."
-              className="w-full px-4 py-3.5 rounded-xl bg-input border border-transparent focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm font-medium"
-            />
-          </div>
-        </div>
-
-        {/* Connect Button */}
-        <button
-          onClick={handleConnect}
-          disabled={isLoading}
-          className="w-full mt-8 py-4 bg-primary text-primary-foreground font-bold text-lg rounded-2xl hover:bg-primary/90 active:scale-[0.98] transition-all disabled:opacity-70 flex items-center justify-center gap-2 shadow-lg shadow-primary/20"
-        >
-          {isLoading ? (
-            <>
-              <Loader2 className="w-5 h-5 animate-spin" /> Connecting...
-            </>
-          ) : (
-            <>
-              Connect & Launch Scanner <ArrowRight className="w-5 h-5" />
-            </>
-          )}
-        </button>
-      </motion.div>
+              {/* Admin Login Tab */}
+              <TabsContent value="admin" className="space-y-4">
+                <CardHeader className="px-0 pt-0">
+                  <CardTitle className="text-lg">Admin Login</CardTitle>
+                  <CardDescription>Access the admin CRM portal to manage events.</CardDescription>
+                </CardHeader>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="admin-username">Admin Username</Label>
+                    <Input id="admin-username" placeholder="Enter admin username" value={adminUsername} onChange={e => setAdminUsername(e.target.value)} className="h-12" onKeyDown={e => e.key === 'Enter' && handleAdminLogin()} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="admin-password">Admin Password</Label>
+                    <Input id="admin-password" type="password" placeholder="Enter admin password" value={adminPassword} onChange={e => setAdminPassword(e.target.value)} className="h-12" onKeyDown={e => e.key === 'Enter' && handleAdminLogin()} />
+                  </div>
+                  <Button onClick={handleAdminLogin} disabled={adminLoading} className="w-full h-12 text-base font-bold gap-2">
+                    {adminLoading ? <><Loader2 className="w-5 h-5 animate-spin" /> Signing in...</> : <>Access Admin Portal <Shield className="w-5 h-5" /></>}
+                  </Button>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
+      </div>
     </main>
   );
 }
