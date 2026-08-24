@@ -34,29 +34,7 @@ export async function POST(req: Request) {
     let extractedData;
 
     try {
-      // 1st Attempt: Gemini 3.6 Flash
-      const genAI = new GoogleGenerativeAI(geminiApiKey);
-      const model = genAI.getGenerativeModel({ model: "gemini-3.6-flash" });
-      const base64Data = image.replace(/^data:image\/(png|jpeg|jpg);base64,/, "");
-
-      const imageParts = [
-        {
-          inlineData: {
-            data: base64Data,
-            mimeType: "image/jpeg"
-          },
-        },
-      ];
-
-      const result = await model.generateContent([prompt, ...imageParts]);
-      const responseText = result.response.text();
-      const cleanedJsonString = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
-      extractedData = JSON.parse(cleanedJsonString);
-
-    } catch (geminiError) {
-      console.warn("Gemini API failed, falling back to Groq Llama 3.2 90B Vision:", geminiError);
-
-      // 2nd Attempt: Groq Fallback
+      // 1st Attempt: Groq Primary
       const groq = new Groq({ apiKey: groqApiKey });
       const chatCompletion = await groq.chat.completions.create({
         messages: [
@@ -78,6 +56,28 @@ export async function POST(req: Request) {
 
       const responseText = chatCompletion.choices[0]?.message?.content || "{}";
       extractedData = JSON.parse(responseText);
+
+    } catch (groqError) {
+      console.warn("Groq API failed, falling back to Gemini 3.6 Flash:", groqError);
+
+      // 2nd Attempt: Gemini Fallback
+      const genAI = new GoogleGenerativeAI(geminiApiKey);
+      const model = genAI.getGenerativeModel({ model: "gemini-3.6-flash" });
+      const base64Data = image.replace(/^data:image\/(png|jpeg|jpg);base64,/, "");
+
+      const imageParts = [
+        {
+          inlineData: {
+            data: base64Data,
+            mimeType: "image/jpeg"
+          },
+        },
+      ];
+
+      const result = await model.generateContent([prompt, ...imageParts]);
+      const responseText = result.response.text();
+      const cleanedJsonString = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
+      extractedData = JSON.parse(cleanedJsonString);
     }
 
     return NextResponse.json({

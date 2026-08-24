@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { getGoogleClient } from '@/lib/google-auth';
 import { google } from 'googleapis';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+import Groq from 'groq-sdk';
 
 export async function POST(req: Request) {
   try {
@@ -58,11 +60,11 @@ export async function POST(req: Request) {
       });
       leadData = leadRes.data.values || [];
     } catch {
-      return NextResponse.json({ totalLeads: 0, totalNumbers: 0 });
+      return NextResponse.json({ totalLeads: 0, totalNumbers: 0, summary: 'No leads captured yet. The sheet is empty.' });
     }
 
     if (leadData.length <= 1) {
-      return NextResponse.json({ totalLeads: 0, totalNumbers: 0 });
+      return NextResponse.json({ totalLeads: 0, totalNumbers: 0, summary: 'No data available yet.' });
     }
 
     // Build a text representation for the AI
@@ -76,7 +78,38 @@ export async function POST(req: Request) {
         if (row[phoneIdx] && row[phoneIdx].trim() !== '') totalNumbers++;
       }
     }
-    return NextResponse.json({ totalLeads: dataRows.length, totalNumbers });
+
+    // AI Summary (Groq -> Gemini)
+    const csvText = [leadData[0].join(', '), ...dataRows.map(r => r.join(', '))].join('\n');
+    const prompt = `You are an analytics assistant. Given the following event lead data for "${eventName}", generate a SHORT executive summary in exactly 2 sentences. Include: total lead count, top companies represented, and one notable insight. Keep it extremely concise and professional.\n\nData:\n${csvText}`;
+    
+    let summary = `Event "${eventName}" recorded ${dataRows.length} leads. AI summary unavailable.`;
+    const groqApiKey = process.env.GROQ_API_KEY || '';
+    const geminiApiKey = process.env.GEMINI_API_KEY || '';
+    
+    try {
+        if (!groqApiKey) throw new Error("No Groq Key");
+        const groq = new Groq({ apiKey: groqApiKey });
+        const chatCompletion = await groq.chat.completions.create({
+            messages: [{ role: "user", content: prompt }],
+            model: "llama-3.1-70b-versatile",
+            temperature: 0.2,
+        });
+        summary = chatCompletion.choices[0]?.message?.content || summary;
+    } catch (groqError) {
+        console.warn("Groq Summary failed, falling back to Gemini:", groqError);
+        try {
+            if (!geminiApiKey) throw new Error("No Gemini Key");
+            const genAI = new GoogleGenerativeAI(geminiApiKey);
+            const model = genAI.getGenerativeModel({ model: 'gemini-3.6-flash' });
+            const result = await model.generateContent(prompt);
+            summary = result.response.text();
+        } catch (geminiError) {
+            console.error("Both summary AIs failed");
+        }
+    }
+
+    return NextResponse.json({ totalLeads: dataRows.length, totalNumbers, summary });
 
   } catch (error) {
     console.error('Event summary error:', error);

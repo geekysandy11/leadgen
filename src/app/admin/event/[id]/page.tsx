@@ -25,6 +25,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
   const router = useRouter();
   const [event, setEvent] = useState<EventData | null>(null);
   const [totalNumbers, setTotalNumbers] = useState(0);
+  const [summary, setSummary] = useState('');
   const [totalLeads, setTotalLeads] = useState(0);
   const [loadingEvent, setLoadingEvent] = useState(true);
   const [loadingSummary, setLoadingSummary] = useState(false);
@@ -131,17 +132,28 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
           <Separator className="opacity-50" />
           <CardContent className="pt-6 relative z-10">
             {loadingSummary ? (
-              <div className="flex justify-center py-6"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div>
+              <div className="space-y-4 py-4">
+                <div className="h-4 bg-muted/60 rounded-md animate-pulse w-full" />
+                <div className="h-4 bg-muted/60 rounded-md animate-pulse w-5/6" />
+                <div className="flex justify-center pt-2"><Loader2 className="w-5 h-5 animate-spin text-primary/50" /></div>
+              </div>
             ) : (
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-muted/30 p-5 rounded-xl border border-border/50 flex flex-col items-center justify-center gap-2">
-                  <span className="text-4xl font-black text-foreground">{totalLeads}</span>
-                  <span className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Total Leads</span>
+              <div className="space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-muted/30 p-4 rounded-xl border border-border/50 flex flex-col items-center justify-center gap-1.5">
+                    <span className="text-3xl font-black text-foreground">{totalLeads}</span>
+                    <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Total Leads</span>
+                  </div>
+                  <div className="bg-muted/30 p-4 rounded-xl border border-border/50 flex flex-col items-center justify-center gap-1.5">
+                    <span className="text-3xl font-black text-foreground">{totalNumbers}</span>
+                    <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Numbers Captured</span>
+                  </div>
                 </div>
-                <div className="bg-muted/30 p-5 rounded-xl border border-border/50 flex flex-col items-center justify-center gap-2">
-                  <span className="text-4xl font-black text-foreground">{totalNumbers}</span>
-                  <span className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Numbers Captured</span>
-                </div>
+                {summary && (
+                  <div className="bg-primary/5 p-5 rounded-xl border border-primary/20 shadow-inner">
+                    <p className="text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap font-medium">{summary}</p>
+                  </div>
+                )}
               </div>
             )}
           </CardContent>
