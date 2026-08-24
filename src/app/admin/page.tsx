@@ -11,6 +11,7 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, Dr
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import { ThemeToggle } from '@/components/theme-toggle';
+import Image from "next/image";
 import { Plus, LogOut, ExternalLink, Pencil, Eye, Copy, CheckCircle2, Loader2, Calendar, User, FileSpreadsheet, FolderOpen, Zap, Shield, ScanLine, HomeIcon } from 'lucide-react';
 
 interface EventData {
@@ -97,8 +98,10 @@ export default function AdminPage() {
       <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-border/40 shadow-sm supports-[backdrop-filter]:bg-background/60">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20 shadow-[0_0_15px_rgba(var(--primary),0.2)]"><Shield className="w-5 h-5 text-primary" /></div>
-            <div><h1 className="text-lg font-bold tracking-tight leading-none">EventLead Admin</h1><p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider mt-0.5">CRM Portal</p></div>
+            <div className="w-10 h-10 flex items-center justify-center shrink-0 relative">
+              <Image src="/logo.png" alt="Logo" fill className="object-contain" />
+            </div>
+            <div><h1 className="text-lg font-bold tracking-tight leading-none">Capturing Event Lead</h1><p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider mt-0.5">The Catalysts Group</p></div>
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle />

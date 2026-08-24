@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion, Variants } from 'framer-motion';
+import Image from "next/image";
 import { Zap, ArrowRight, FolderPlus, FileSpreadsheet, Share2, Rocket, CheckCircle2 } from 'lucide-react';
 
 export default function LandingPage() {
@@ -45,7 +46,9 @@ export default function LandingPage() {
           className="flex items-center justify-center gap-3 mb-6 lg:mb-8"
         >
           <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl lg:rounded-3xl bg-primary/10 flex items-center justify-center shadow-inner">
-            <Zap className="w-8 h-8 lg:w-10 lg:h-10 text-primary" />
+            <div className="w-10 h-10 flex items-center justify-center relative">
+                    <Image src="/logo.png" alt="Logo" fill className="object-contain" />
+                  </div>
           </div>
         </motion.div>
         <motion.h1 
@@ -62,7 +65,7 @@ export default function LandingPage() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 lg:mb-10 text-balance leading-relaxed"
         >
-          EventLead securely syncs captured leads directly to your Google Drive and Sheets. 
+          Capturing Event Lead securely syncs captured leads directly to your Google Drive and Sheets. 
           Follow this 3-step guide to set up your private workspace in minutes.
         </motion.p>
         <motion.div
@@ -249,7 +252,9 @@ export default function LandingPage() {
               
               <div className="bg-card border-2 border-border rounded-3xl lg:rounded-[2.5rem] p-8 sm:p-10 shadow-xl lg:shadow-2xl relative z-10 flex flex-col items-center justify-center text-center space-y-6">
                 <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-2">
-                  <Zap className="w-10 h-10 text-primary" />
+                  <div className="w-10 h-10 flex items-center justify-center relative">
+                    <Image src="/logo.png" alt="Logo" fill className="object-contain" />
+                  </div>
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold mb-2">Ready to Start?</h3>

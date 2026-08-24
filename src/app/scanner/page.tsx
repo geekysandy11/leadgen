@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";
 import { Button } from '@/components/ui/button';
+import Image from "next/image";
 import { Zap, LayoutDashboard, LogOut, User, FileSpreadsheet, FolderOpen, Loader2, History, HomeIcon } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { useTypewriter } from '@/hooks/useTypewriter';
@@ -26,7 +27,7 @@ export default function Home() {
   const [recentLeads, setRecentLeads] = useState<any[]>([]);
   const [loadingLeads, setLoadingLeads] = useState(false);
 
-  const { text: typedEventName } = useTypewriter(session?.eventName || 'EventLead', 50);
+  const { text: typedEventName } = useTypewriter(session?.eventName || 'Capturing Event Lead', 50);
 
   useEffect(() => {
     fetch('/api/auth/session')
@@ -73,13 +74,14 @@ export default function Home() {
       <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-border/40 shadow-sm supports-[backdrop-filter]:bg-background/60">
         <div className="max-w-md mx-auto px-5 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 border border-primary/20 shadow-[0_0_15px_rgba(var(--primary),0.2)]">
-              <Zap className="w-5 h-5 text-primary" />
+            <div className="w-10 h-10 flex items-center justify-center shrink-0 relative">
+              <Image src="/logo.png" alt="Logo" fill className="object-contain" />
             </div>
             <div className="min-w-0">
               <h1 className="text-lg font-bold tracking-tight text-foreground leading-none truncate">
                 {typedEventName}
               </h1>
+              <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider mt-0.5">The Catalysts Group</p>
               <div className="flex items-center gap-1.5 mt-0.5">
                 <div className="flex items-center gap-1 bg-green-500/10 text-green-500 px-1.5 py-0.5 rounded-md border border-green-500/20">
                   <User className="w-2.5 h-2.5" />
