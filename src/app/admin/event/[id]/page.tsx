@@ -24,7 +24,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
   const { id } = use(params);
   const router = useRouter();
   const [event, setEvent] = useState<EventData | null>(null);
-  const [summary, setSummary] = useState('');
+  const [totalNumbers, setTotalNumbers] = useState(0);
   const [totalLeads, setTotalLeads] = useState(0);
   const [loadingEvent, setLoadingEvent] = useState(true);
   const [loadingSummary, setLoadingSummary] = useState(false);
@@ -59,9 +59,9 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
         body: JSON.stringify({ eventId }),
       });
       const data = await res.json();
-      if (data.summary) setSummary(data.summary);
+      if (data.totalNumbers !== undefined) setTotalNumbers(data.totalNumbers);
       if (data.totalLeads) setTotalLeads(data.totalLeads);
-    } catch { setSummary('Failed to generate summary.'); }
+    } catch { toast.error('Failed to load stats'); }
     finally { setLoadingSummary(false); }
   };
 
@@ -119,31 +119,29 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
           </CardContent>
         </Card>
 
-        <Card className="relative overflow-hidden border-primary/30 shadow-[0_0_40px_rgba(var(--primary),0.1)]">
-          <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent pointer-events-none" />
+        <Card className="relative overflow-hidden border-border/50 shadow-sm mt-6">
           <CardHeader className="relative z-10 pb-4">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center"><Sparkles className="w-4 h-4 text-primary" /></div>
-                <CardTitle className="text-lg">AI Summary</CardTitle>
-                {totalLeads > 0 && <Badge variant="secondary" className="ml-2 bg-background border-border/50 text-xs px-2 shadow-sm">{totalLeads} leads</Badge>}
-              </div>
-              <Button variant="ghost" size="sm" onClick={() => generateSummary(event.eventId)} disabled={loadingSummary} className="gap-1.5 rounded-full hover:bg-background shadow-sm border border-transparent hover:border-border/50 transition-all">
-                <RefreshCw className={`w-3.5 h-3.5 ${loadingSummary ? 'animate-spin text-primary' : ''}`} /> <span className="hidden sm:inline">Regenerate</span>
+              <CardTitle className="text-lg font-semibold">Event Statistics</CardTitle>
+              <Button variant="outline" size="sm" onClick={() => generateSummary(event.eventId)} disabled={loadingSummary} className="gap-2 rounded-lg">
+                <RefreshCw className={`w-4 h-4 ${loadingSummary ? 'animate-spin' : ''}`} /> Refresh
               </Button>
             </div>
           </CardHeader>
-          <Separator className="opacity-50 relative z-10 mx-6 w-auto" />
+          <Separator className="opacity-50" />
           <CardContent className="pt-6 relative z-10">
             {loadingSummary ? (
-              <div className="space-y-4">
-                <div className="h-4 bg-muted/60 rounded-md animate-pulse w-full" />
-                <div className="h-4 bg-muted/60 rounded-md animate-pulse w-5/6" />
-                <div className="h-4 bg-muted/60 rounded-md animate-pulse w-4/6" />
-              </div>
+              <div className="flex justify-center py-6"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div>
             ) : (
-              <div className="bg-background/40 p-5 rounded-xl border border-border/30 shadow-inner backdrop-blur-sm">
-                <p className="text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap">{summary || 'No summary available.'}</p>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-muted/30 p-5 rounded-xl border border-border/50 flex flex-col items-center justify-center gap-2">
+                  <span className="text-4xl font-black text-foreground">{totalLeads}</span>
+                  <span className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Total Leads</span>
+                </div>
+                <div className="bg-muted/30 p-5 rounded-xl border border-border/50 flex flex-col items-center justify-center gap-2">
+                  <span className="text-4xl font-black text-foreground">{totalNumbers}</span>
+                  <span className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Numbers Captured</span>
+                </div>
               </div>
             )}
           </CardContent>

@@ -11,14 +11,7 @@ import { Zap, ArrowRight, FolderPlus, FileSpreadsheet, Share2, Rocket, CheckCirc
 export default function LandingPage() {
   const router = useRouter();
   
-  // Check session on mount to redirect early if already logged in
-  useEffect(() => {
-    fetch('/api/auth/session')
-      .then(res => {
-        if (res.ok) router.replace('/scanner');
-      })
-      .catch(() => {});
-  }, [router]);
+  
 
   // Animation variants
   const fadeUp: Variants = {
@@ -208,7 +201,7 @@ export default function LandingPage() {
                     <h3 className="font-bold text-xl mb-1">Share as Editor</h3>
                     <p className="text-muted-foreground mb-3">Click Share, and invite our Service Account Email as an <strong>Editor</strong>.</p>
                     <div className="bg-muted border border-border rounded-xl p-3 flex items-center gap-2">
-                      <code className="text-xs lg:text-sm text-foreground truncate flex-1 font-mono select-all">lead-retrieval-bot@leadgen-506213.iam.gserviceaccount.com</code>
+                      <code className="text-xs lg:text-sm text-foreground truncate flex-1 font-mono select-all">lead-retrieval-bot@***.iam.gserviceaccount.com</code>
                     </div>
                   </div>
                 </li>

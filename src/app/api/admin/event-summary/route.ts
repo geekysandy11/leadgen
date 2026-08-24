@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { getGoogleClient } from '@/lib/google-auth';
 import { google } from 'googleapis';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export async function POST(req: Request) {
   try {
@@ -59,33 +58,26 @@ export async function POST(req: Request) {
       });
       leadData = leadRes.data.values || [];
     } catch {
-      return NextResponse.json({ summary: `No data available for "${eventName}" yet. The target sheet may be empty or inaccessible.` });
+      return NextResponse.json({ totalLeads: 0, totalNumbers: 0 });
     }
 
     if (leadData.length <= 1) {
-      return NextResponse.json({ summary: `No leads captured yet for "${eventName}". The sheet is empty.` });
+      return NextResponse.json({ totalLeads: 0, totalNumbers: 0 });
     }
 
     // Build a text representation for the AI
-    const headers = leadData[0];
+    
+    const headers = leadData[0].map(h => h.toLowerCase());
     const dataRows = leadData.slice(1);
-    const csvText = [headers.join(', '), ...dataRows.map(r => r.join(', '))].join('\n');
-
-    // Generate AI summary (2-3 lines)
-    const geminiApiKey = process.env.GEMINI_API_KEY || '';
-    if (!geminiApiKey) {
-      return NextResponse.json({ summary: `Event "${eventName}" has ${dataRows.length} leads captured. AI summary unavailable (no API key).` });
+    const phoneIdx = headers.findIndex(h => h.includes('phone') || h.includes('mobile'));
+    let totalNumbers = 0;
+    if (phoneIdx !== -1) {
+      for (const row of dataRows) {
+        if (row[phoneIdx] && row[phoneIdx].trim() !== '') totalNumbers++;
+      }
     }
+    return NextResponse.json({ totalLeads: dataRows.length, totalNumbers });
 
-    const genAI = new GoogleGenerativeAI(geminiApiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-3.6-flash' });
-
-    const prompt = `You are an analytics assistant. Given the following event lead data for "${eventName}", generate a SHORT executive summary in exactly 2-3 sentences. Include: total lead count, top companies represented, and one notable insight or pattern. Keep it concise and professional.\n\nData:\n${csvText}`;
-
-    const result = await model.generateContent(prompt);
-    const summary = result.response.text();
-
-    return NextResponse.json({ summary, totalLeads: dataRows.length });
   } catch (error) {
     console.error('Event summary error:', error);
     return NextResponse.json({ error: 'Failed to generate summary.' }, { status: 500 });
