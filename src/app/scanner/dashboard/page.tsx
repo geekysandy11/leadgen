@@ -119,7 +119,7 @@ export default function ScannerDashboardPage() {
                   {recentLeads.map((lead, idx) => (
                     <div key={idx} className="p-5 flex flex-col gap-1.5 hover:bg-muted/20 transition-colors">
                       <div className="flex items-center justify-between">
-                        <span className="text-base font-bold text-foreground font-serif tracking-tight">{lead.Name || lead.name || 'Unknown'}</span>
+                        <span className="text-base font-semibold text-foreground">{lead.Name || lead.name || 'Unknown'}</span>
                         <Badge variant="secondary" className="bg-background/50 border-border/50 text-[9px] uppercase tracking-wider shadow-sm truncate max-w-[120px]">
                           {lead.Company || lead.company || 'No Company'}
                         </Badge>
