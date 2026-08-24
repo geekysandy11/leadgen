@@ -12,23 +12,23 @@ export async function POST(req: Request) {
     const apiKey = process.env.GEMINI_API_KEY || ""; 
     
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-3.6-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-3.1-pro-preview" });
 
     const prompt = `
-      You are an expert at extracting structured data from business cards and IDs.
-      Analyze this image carefully. Use visual cues like fonts, logos, and layout to differentiate information.
+            You are an elite AI extraction assistant designed to process business cards and IDs with 100% pixel-perfect accuracy.
+      Analyze this image carefully. You MUST transcribe text character-by-character. Do NOT guess or hallucinate. 
+      If a letter is C, do not write L. If a letter is N, do not write O.
 
       Extraction Rules:
-      1. **Name**: Identify the person's name. If no name is present (only a company name exists), leave it blank. Distinguish carefully between the company owner's name and the company name.
-      2. **Company**: Identify the company/store/brand name. Look for logos or prominent text.
-      3. **Mobile**: Extract phone numbers. Keep country codes (e.g., +91, +89) if present. Handle dashes or spaces gracefully.
-      4. **Email**: Extract any email addresses containing '@'.
-      5. **Address**: Look for physical addresses. This includes street names, sector/block numbers, cities, and 6-digit pin codes/zip codes. Ensure you capture the full string.
+      1. **Name**: Identify the person's name EXACTLY as printed. 
+      2. **Company**: Identify the company/store/brand name EXACTLY as printed. Look closely at logos.
+      3. **Mobile**: Extract ALL phone numbers. Preserve exact formatting including parentheses, dashes, plus signs, and country codes (e.g., (656)-8686-869, (44)- 6565-1423).
+      4. **Email**: Extract any email addresses containing '@'. Spelling must be flawless.
+      5. **Address**: Look for physical addresses. Preserve spacing, punctuation, and pin codes perfectly.
       6. **Age & Gender**: Usually only present on IDs, leave blank if it's a standard business card.
 
       Return the result as a strict JSON object with EXACTLY these keys: "Name", "Email", "Mobile", "Age", "Gender", "Address", "Company".
-      If a field is missing, return an empty string "" for that field. Do not include markdown formatting or backticks, just the raw JSON.
-    `;
+      If a field is missing, return an empty string "" for that field. Do not include markdown formatting or backticks, just the raw JSON.    `;
 
     const base64Data = image.replace(/^data:image\/(png|jpeg|jpg);base64,/, "");
 
@@ -65,6 +65,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Failed to process card image' }, { status: 500 });
   }
 }
+
 
 
 
