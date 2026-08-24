@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     const apiKey = process.env.GEMINI_API_KEY || ""; 
     
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-3.6-flash" });
 
     const prompt = `
       You are an expert at extracting structured data from business cards and IDs.
@@ -65,5 +65,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Failed to process card image' }, { status: 500 });
   }
 }
+
 
 
