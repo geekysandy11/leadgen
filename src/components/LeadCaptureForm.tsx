@@ -227,7 +227,7 @@ export function LeadCaptureForm() {
       </AnimatePresence>
 
       {/* Hidden Inputs */}
-      <input type="file" accept="image/*" ref={cardInputRef} onChange={handleCardCapture} className="hidden" />
+      <input type="file" accept="image/*" capture="environment" ref={cardInputRef} onChange={handleCardCapture} className="hidden" />
       <input type="file" accept="image/*" capture="environment" ref={liveInputRef} onChange={handleLiveCapture} className="hidden" />
 
       <AnimatePresence mode="wait">

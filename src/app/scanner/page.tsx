@@ -168,6 +168,14 @@ export default function Home() {
       </header>
 
       <div className="flex-1 flex flex-col">
+        <div className="w-full max-w-md mx-auto px-5 pt-6 pb-2 text-center">
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground leading-tight">
+            {typedEventName}
+          </h1>
+          <p className="text-xs sm:text-sm text-muted-foreground font-bold uppercase tracking-[0.2em] mt-2 text-primary/80">
+            The Catalysts Group
+          </p>
+        </div>
         <LeadCaptureForm />
       </div>
     </main>
