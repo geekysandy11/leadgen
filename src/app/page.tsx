@@ -81,12 +81,31 @@ export default function LandingPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <Link 
-            href="/login"
-            className="inline-flex items-center justify-center gap-3 bg-primary text-primary-foreground py-3.5 px-8 lg:py-4 lg:px-10 rounded-xl lg:rounded-2xl font-bold text-base lg:text-lg hover:bg-primary/90 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/20"
-          >
-            Sign In to Workspace <ArrowRight className="w-5 h-5 lg:w-6 lg:h-6" />
-          </Link>
+          {session ? (
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <button
+                onClick={() => router.push('/scanner')}
+                className="inline-flex items-center justify-center gap-3 bg-transparent border-2 border-primary text-primary py-3.5 px-8 lg:py-4 lg:px-10 rounded-xl lg:rounded-2xl font-bold text-base lg:text-lg hover:bg-primary/10 hover:scale-105 active:scale-95 transition-all"
+              >
+                Go to Scanner <ArrowRight className="w-5 h-5 lg:w-6 lg:h-6" />
+              </button>
+              {session.role === 'admin' && (
+                <button
+                  onClick={() => router.push('/admin')}
+                  className="inline-flex items-center justify-center gap-3 bg-primary text-primary-foreground py-3.5 px-8 lg:py-4 lg:px-10 rounded-xl lg:rounded-2xl font-bold text-base lg:text-lg hover:bg-primary/90 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/20"
+                >
+                  Admin Panel <ArrowRight className="w-5 h-5 lg:w-6 lg:h-6" />
+                </button>
+              )}
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className="inline-flex items-center justify-center gap-3 bg-primary text-primary-foreground py-3.5 px-8 lg:py-4 lg:px-10 rounded-xl lg:rounded-2xl font-bold text-base lg:text-lg hover:bg-primary/90 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/20"
+            >
+              Sign In to Workspace <ArrowRight className="w-5 h-5 lg:w-6 lg:h-6" />
+            </Link>
+          )}
         </motion.div>
       </header>
 
@@ -323,12 +342,21 @@ export default function LandingPage() {
             Go to Scanner <ArrowRight className="w-5 h-5" />
           </button>
         ) : (
+          {session ? (
+          <button 
+            onClick={() => router.push('/scanner')}
+            className="flex items-center justify-center gap-2 w-full max-w-sm bg-primary text-primary-foreground py-4 rounded-xl font-bold text-lg active:scale-[0.98] transition-transform shadow-lg shadow-primary/20"
+          >
+            Go to Scanner <ArrowRight className="w-5 h-5" />
+          </button>
+        ) : (
           <Link 
             href="/login"
             className="flex items-center justify-center gap-2 w-full max-w-sm bg-primary text-primary-foreground py-4 rounded-xl font-bold text-lg active:scale-[0.98] transition-transform shadow-lg shadow-primary/20"
           >
             Go to Login <ArrowRight className="w-5 h-5" />
           </Link>
+        )}
         )}
       </div>
     </main>
