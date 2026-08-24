@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion, Variants } from 'framer-motion';
 import Image from "next/image";
+import { ThemeToggle } from '@/components/theme-toggle';
 import { Zap, ArrowRight, FolderPlus, FileSpreadsheet, Share2, Rocket, CheckCircle2 } from 'lucide-react';
 
 export default function LandingPage() {
@@ -37,6 +38,7 @@ export default function LandingPage() {
 
   return (
     <main className="min-h-dvh bg-background text-foreground pb-48 lg:pb-32 font-sans selection:bg-primary/20 overflow-x-hidden">
+      <div className="absolute top-4 right-4 z-50"><ThemeToggle /></div>
       {/* Hero Section */}
       <header className="pt-20 pb-16 lg:pt-24 lg:pb-20 px-5 sm:px-6 text-center max-w-4xl mx-auto">
         <motion.div 
@@ -46,8 +48,8 @@ export default function LandingPage() {
           className="flex items-center justify-center gap-3 mb-6 lg:mb-8"
         >
           <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl lg:rounded-3xl bg-primary/10 flex items-center justify-center shadow-inner">
-            <div className="w-10 h-10 flex items-center justify-center relative">
-                    <Image src="/logo.png" alt="Logo" fill className="object-contain" />
+            <div className="w-10 h-10 flex items-center justify-center relative overflow-hidden">
+                    <Image src="/logo.png" alt="Logo" fill className="object-contain scale-[2.5]" />
                   </div>
           </div>
         </motion.div>
@@ -252,8 +254,8 @@ export default function LandingPage() {
               
               <div className="bg-card border-2 border-border rounded-3xl lg:rounded-[2.5rem] p-8 sm:p-10 shadow-xl lg:shadow-2xl relative z-10 flex flex-col items-center justify-center text-center space-y-6">
                 <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-2">
-                  <div className="w-10 h-10 flex items-center justify-center relative">
-                    <Image src="/logo.png" alt="Logo" fill className="object-contain" />
+                  <div className="w-10 h-10 flex items-center justify-center relative overflow-hidden">
+                    <Image src="/logo.png" alt="Logo" fill className="object-contain scale-[2.5]" />
                   </div>
                 </div>
                 <div>

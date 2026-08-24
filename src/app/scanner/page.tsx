@@ -74,8 +74,8 @@ export default function Home() {
       <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-border/40 shadow-sm supports-[backdrop-filter]:bg-background/60">
         <div className="max-w-md mx-auto px-5 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-10 h-10 flex items-center justify-center shrink-0 relative">
-              <Image src="/logo.png" alt="Logo" fill className="object-contain" />
+            <div className="w-10 h-10 flex items-center justify-center shrink-0 relative overflow-hidden">
+              <Image src="/logo.png" alt="Logo" fill className="object-contain scale-[2.5]" />
             </div>
             <div className="min-w-0">
               <h1 className="text-lg font-bold tracking-tight text-foreground leading-none truncate">

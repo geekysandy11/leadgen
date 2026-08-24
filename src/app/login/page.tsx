@@ -66,8 +66,8 @@ export default function LoginPage() {
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1, duration: 0.4 }} className="text-center">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center shadow-lg shadow-primary/10">
-              <div className="w-12 h-12 flex items-center justify-center relative">
-            <Image src="/logo.png" alt="Logo" fill className="object-contain" />
+              <div className="w-12 h-12 flex items-center justify-center relative overflow-hidden">
+            <Image src="/logo.png" alt="Logo" fill className="object-contain scale-[2.5]" />
           </div>
             </div>
           </div>

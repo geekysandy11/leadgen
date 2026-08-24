@@ -98,8 +98,8 @@ export default function AdminPage() {
       <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-border/40 shadow-sm supports-[backdrop-filter]:bg-background/60">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 flex items-center justify-center shrink-0 relative">
-              <Image src="/logo.png" alt="Logo" fill className="object-contain" />
+            <div className="w-10 h-10 flex items-center justify-center shrink-0 relative overflow-hidden">
+              <Image src="/logo.png" alt="Logo" fill className="object-contain scale-[2.5]" />
             </div>
             <div><h1 className="text-lg font-bold tracking-tight leading-none">Capturing Event Lead</h1><p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider mt-0.5">The Catalysts Group</p></div>
           </div>
