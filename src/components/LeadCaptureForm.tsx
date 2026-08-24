@@ -136,6 +136,7 @@ export function LeadCaptureForm() {
       setMode('form');
     } catch (error: unknown) {
       setErrorMessage(error instanceof Error ? error.message : 'Unknown error');
+      setTargetData(emptyData);
       setMode('idle');
     }
   };
@@ -185,6 +186,7 @@ export function LeadCaptureForm() {
       setTimeout(() => resetForm(), 2500);
     } catch (error: unknown) {
       setErrorMessage(error instanceof Error ? error.message : 'Unknown error');
+      setTargetData(emptyData);
       setMode('form');
     }
   };
@@ -361,4 +363,5 @@ export function LeadCaptureForm() {
     </div>
   );
 }
+
 
