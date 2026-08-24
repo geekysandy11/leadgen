@@ -76,9 +76,9 @@ export default function LoginPage() {
           <Card className="shadow-2xl border-border/60 backdrop-blur-md w-full overflow-visible">
             <CardContent className="p-6 sm:p-8">
               <Tabs defaultValue="staff" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 mb-6 h-12">
-                  <TabsTrigger value="staff" className="gap-2 h-10 text-sm font-semibold"><UserCircle className="w-4 h-4" /> Staff Login</TabsTrigger>
-                  <TabsTrigger value="admin" className="gap-2 h-10 text-sm font-semibold"><ShieldCheck className="w-4 h-4" /> Admin Login</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-2 mb-6 rounded-xl p-1 bg-muted/50">
+                  <TabsTrigger value="staff" className="gap-2 py-2.5 rounded-lg text-sm font-semibold data-[state=active]:shadow-none"><UserCircle className="w-4 h-4" /> Staff Login</TabsTrigger>
+                  <TabsTrigger value="admin" className="gap-2 py-2.5 rounded-lg text-sm font-semibold data-[state=active]:shadow-none"><ShieldCheck className="w-4 h-4" /> Admin Login</TabsTrigger>
                 </TabsList>
 
                 <AnimatePresence mode="wait">
