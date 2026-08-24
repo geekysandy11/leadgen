@@ -143,31 +143,35 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
           </CardHeader>
           <Separator className="opacity-50" />
           <CardContent className="pt-6 relative z-10">
-            {loadingSummary ? (
-              <div className="space-y-4 py-4">
-                <div className="h-4 bg-muted/60 rounded-md animate-pulse w-full" />
-                <div className="h-4 bg-muted/60 rounded-md animate-pulse w-5/6" />
-                <div className="flex justify-center pt-2"><Loader2 className="w-5 h-5 animate-spin text-primary/50" /></div>
+            <div className="space-y-6">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-muted/30 p-4 rounded-xl border border-border/50 flex flex-col items-center justify-center gap-1.5">
+                  <span className="text-3xl font-black text-foreground">{totalLeads}</span>
+                  <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Total Leads</span>
+                </div>
+                <div className="bg-muted/30 p-4 rounded-xl border border-border/50 flex flex-col items-center justify-center gap-1.5">
+                  <span className="text-3xl font-black text-foreground">{totalNumbers}</span>
+                  <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Numbers Captured</span>
+                </div>
               </div>
-            ) : (
-              <div className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-muted/30 p-4 rounded-xl border border-border/50 flex flex-col items-center justify-center gap-1.5">
-                    <span className="text-3xl font-black text-foreground">{totalLeads}</span>
-                    <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Total Leads</span>
-                  </div>
-                  <div className="bg-muted/30 p-4 rounded-xl border border-border/50 flex flex-col items-center justify-center gap-1.5">
-                    <span className="text-3xl font-black text-foreground">{totalNumbers}</span>
-                    <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Numbers Captured</span>
+              
+              {loadingSummary ? (
+                <div className="bg-primary/5 p-5 rounded-xl border border-primary/20 shadow-inner space-y-3 relative overflow-hidden">
+
+                  <div className="h-3 bg-primary/10 rounded-md w-full animate-pulse" />
+                  <div className="h-3 bg-primary/10 rounded-md w-11/12 animate-pulse" />
+                  <div className="h-3 bg-primary/10 rounded-md w-4/5 animate-pulse" />
+                  <div className="flex items-center gap-2 pt-2 text-xs text-primary/60 font-semibold uppercase tracking-wider">
+                    <Sparkles className="w-3 h-3 animate-spin" />
+                    Generating Insights...
                   </div>
                 </div>
-                {summary && (
-                  <div className="bg-primary/5 p-5 rounded-xl border border-primary/20 shadow-inner">
-                    <p className="text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap font-medium">{typedSummary}</p>
-                  </div>
-                )}
-              </div>
-            )}
+              ) : summary ? (
+                <div className="bg-primary/5 p-5 rounded-xl border border-primary/20 shadow-inner">
+                  <p className="text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap font-medium">{typedSummary}</p>
+                </div>
+              ) : null}
+            </div>
           </CardContent>
         </Card>
       </div>
