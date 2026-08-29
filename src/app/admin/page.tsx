@@ -12,7 +12,8 @@ import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import { ThemeToggle } from '@/components/theme-toggle';
 import Image from "next/image";
-import { Plus, LogOut, ExternalLink, Pencil, Eye, Copy, CheckCircle2, Loader2, Calendar, User, FileSpreadsheet, FolderOpen, Zap, Shield, ScanLine, HomeIcon } from 'lucide-react';
+import { BrandLogo } from '@/components/BrandLogo';
+import { Plus, LogOut, ExternalLink, Pencil, Eye, Copy, CheckCircle2, Loader2, Calendar, User, FileSpreadsheet, FolderOpen, Zap, Shield, HomeIcon } from 'lucide-react';
 
 interface EventData {
   eventId: string;
@@ -98,18 +99,13 @@ export default function AdminPage() {
       <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-border/40 shadow-sm supports-[backdrop-filter]:bg-background/60">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 flex items-center justify-center shrink-0 p-0.5">
-              <Image src="/logo.png" alt="Catalysts Logo" width={247} height={148} className="object-contain w-full h-full" />
-            </div>
+            <BrandLogo size="sm" />
             <div><h1 className="text-lg font-bold tracking-tight leading-none">Capturing Event Lead</h1><p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider mt-0.5">The Catalysts Group</p></div>
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <Button variant="ghost" size="icon" onClick={() => router.push('/')} className="text-muted-foreground hover:bg-primary/10 hover:text-primary rounded-full h-10 w-10 transition-colors">
               <HomeIcon className="w-5 h-5" />
-            </Button>
-            <Button variant="ghost" size="sm" onClick={() => router.push('/scanner')} className="text-muted-foreground hover:bg-primary/10 hover:text-primary rounded-full transition-colors gap-2 px-3">
-              <ScanLine className="w-4 h-4" /> <span className="hidden sm:inline">Scanner</span>
             </Button>
             <Button variant="ghost" size="icon" onClick={handleLogout} className="text-muted-foreground hover:bg-red-50 hover:text-red-500 rounded-full h-10 w-10 transition-colors"><LogOut className="w-5 h-5" /></Button>
           </div>

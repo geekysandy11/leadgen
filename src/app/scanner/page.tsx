@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";
 import { Button } from '@/components/ui/button';
 import Image from "next/image";
+import { BrandLogo } from '@/components/BrandLogo';
 import { Zap, LayoutDashboard, LogOut, User, FileSpreadsheet, FolderOpen, Loader2, History, HomeIcon } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { useTypewriter } from '@/hooks/useTypewriter';
@@ -56,9 +57,7 @@ export default function Home() {
       <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-border/40 shadow-sm supports-[backdrop-filter]:bg-background/60">
         <div className="max-w-md mx-auto px-5 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
-            <div className="w-10 h-10 flex items-center justify-center shrink-0 p-0.5">
-              <Image src="/logo.png" alt="Catalysts Logo" width={247} height={148} className="object-contain w-full h-full" />
-            </div>
+            <BrandLogo size="sm" />
             <div className="min-w-0">
               
               <div className="flex items-center gap-1.5 mt-0.5">

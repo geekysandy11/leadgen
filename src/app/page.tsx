@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion, Variants } from 'framer-motion';
 import Image from "next/image";
+import { BrandLogo } from '@/components/BrandLogo';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Zap, ArrowRight, FolderPlus, FileSpreadsheet, Share2, Rocket, CheckCircle2 } from 'lucide-react';
 
@@ -53,9 +54,7 @@ export default function LandingPage() {
           transition={{ duration: 0.5, ease: "backOut" }}
           className="flex items-center justify-center gap-3 mb-6 lg:mb-8"
         >
-          <div className="w-20 h-20 lg:w-24 lg:h-24 rounded-2xl lg:rounded-3xl bg-primary/10 flex items-center justify-center shadow-inner p-2">
-            <Image src="/logo.png" alt="Catalysts Logo" width={247} height={148} className="object-contain w-full h-full" />
-          </div>
+          <BrandLogo size="lg" />
         </motion.div>
         <motion.h1 
           initial={{ opacity: 0, y: 20 }}
@@ -63,7 +62,7 @@ export default function LandingPage() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-5 lg:mb-6 text-balance leading-tight"
         >
-          Connect Your Event Workspace
+          The Catalysts Group
         </motion.h1>
         <motion.p 
           initial={{ opacity: 0, y: 20 }}
@@ -277,8 +276,8 @@ export default function LandingPage() {
               <div className="absolute inset-0 bg-primary/10 rounded-3xl lg:rounded-[2.5rem] transform -translate-x-3 translate-y-3 lg:-translate-x-4 lg:translate-y-4 -z-10"></div>
               
               <div className="bg-card border-2 border-border rounded-3xl lg:rounded-[2.5rem] p-8 sm:p-10 shadow-xl lg:shadow-2xl relative z-10 flex flex-col items-center justify-center text-center space-y-6">
-                <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-2 p-3">
-                  <Image src="/logo.png" alt="Catalysts Logo" width={247} height={148} className="object-contain w-full h-full" />
+                <div className="mb-2">
+                  <BrandLogo size="md" />
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold mb-2">Ready to Start?</h3>

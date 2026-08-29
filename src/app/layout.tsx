@@ -11,8 +11,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Capturing Event Lead - Lead Retrieval",
-  description: "Capture visitor leads at events instantly with AI-powered card scanning.",
+  title: "The Catalysts Group – Capturing Event Lead",
+  description: "The Catalysts Group – Enterprise event lead capture powered by AI card scanning.",
 };
 
 export const viewport: Viewport = {

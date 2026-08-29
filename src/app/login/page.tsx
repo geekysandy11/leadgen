@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { toast } from 'sonner';
 import Image from "next/image";
+import { BrandLogo } from '@/components/BrandLogo';
 import { Zap, Loader2, ArrowRight, ShieldCheck, UserCircle } from 'lucide-react';
 
 export default function LoginPage() {
@@ -65,9 +66,7 @@ export default function LoginPage() {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="w-full max-w-md space-y-8">
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1, duration: 0.4 }} className="text-center">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center shadow-lg shadow-primary/10 p-2">
-              <Image src="/logo.png" alt="Catalysts Logo" width={247} height={148} className="object-contain w-full h-full" />
-            </div>
+            <BrandLogo size="md" />
           </div>
           <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">Capturing Event Lead</h1>
           <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mt-2">The Catalysts Group</p>

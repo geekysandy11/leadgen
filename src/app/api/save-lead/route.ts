@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     try {
       const getRes = await sheets.spreadsheets.values.get({
         spreadsheetId: sheetId,
-        range: 'Sheet1!A1:J1',
+        range: 'Sheet1!A1:L1',
       });
       if (!getRes.data.values || getRes.data.values.length === 0) {
         isBlank = true;
@@ -50,10 +50,10 @@ export async function POST(req: Request) {
     }
 
     if (isBlank) {
-      const headers = ['ID', 'Name', 'Mobile', 'Email', 'Age', 'Gender', 'Company', 'Address', 'Photo_Drive_Link', 'Timestamp'];
+      const headers = ['ID', 'Name', 'Mobile', 'Email', 'Age', 'Gender', 'Company', 'Address', 'Inquiry', 'Photo_Drive_Link', 'Timestamp'];
       await sheets.spreadsheets.values.update({
         spreadsheetId: sheetId,
-        range: 'Sheet1!A1:J1',
+        range: 'Sheet1!A1:L1',
         valueInputOption: 'RAW',
         requestBody: { values: [headers] },
       });
@@ -69,6 +69,7 @@ export async function POST(req: Request) {
       data.gender || 'N/A',
       data.company || '',
       data.address || '',
+      data.inquiry || '',
       finalDriveLink || 'N/A',
       new Date().toISOString(),
     ];
@@ -76,7 +77,7 @@ export async function POST(req: Request) {
     await withExponentialBackoff(() =>
       sheets.spreadsheets.values.append({
         spreadsheetId: sheetId,
-        range: 'Sheet1!A:J',
+        range: 'Sheet1!A:L',
         valueInputOption: 'USER_ENTERED',
         requestBody: { values: [rowData] },
       })
@@ -90,7 +91,7 @@ export async function POST(req: Request) {
           requests: [
             {
               repeatCell: {
-                range: { startColumnIndex: 0, endColumnIndex: 10 },
+                range: { startColumnIndex: 0, endColumnIndex: 12 },
                 cell: {
                   userEnteredFormat: {
                     wrapStrategy: 'WRAP',

@@ -13,9 +13,10 @@ interface TargetData {
   gender: string;
   address: string;
   company: string;
+  inquiry: string;
 }
 
-const emptyData: TargetData = { name: '', mobile: '', email: '', age: '', gender: 'N/A', address: '', company: '' };
+const emptyData: TargetData = { name: '', mobile: '', email: '', age: '', gender: 'N/A', address: '', company: '', inquiry: '' };
 
 function TypewriterInput({ name, label, targetValue, type = "text", required = false, as = "input" }: { name: string, label: string, targetValue: string, type?: string, required?: boolean, as?: 'input' | 'textarea' }) {
   const { text, handleManualChange } = useTypewriter(targetValue, 15);
@@ -125,7 +126,8 @@ export function LeadCaptureForm() {
         age: data.result.age || '',
         gender: genderValue,
         address: data.result.address || '',
-        company: data.result.company || ''
+        company: data.result.company || '',
+        inquiry: ''
       });
 
       if (!data.result.face_detected) {
@@ -326,6 +328,7 @@ export function LeadCaptureForm() {
               </div>
               <TypewriterInput name="company" label="Company" targetValue={targetData.company} as="textarea" />
               <TypewriterInput name="address" label="Address" targetValue={targetData.address} as="textarea" />
+              <TypewriterInput name="inquiry" label="Inquiry / Notes" targetValue={targetData.inquiry} as="textarea" />
 
               {/* Path 2 Smart Action Banner */}
               {needsPhoto && (
