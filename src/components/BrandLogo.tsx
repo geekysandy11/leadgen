@@ -15,13 +15,25 @@ export function BrandLogo({ size = "md", className = "" }: BrandLogoProps) {
   const { width, height, className: sizeClass } = sizeMap[size];
 
   return (
-    <Image
-      src="/logo.png"
-      alt="The Catalysts Group"
-      width={width}
-      height={height}
-      className={`object-contain ${sizeClass} w-auto transition-all duration-300 dark:brightness-0 dark:invert ${className}`}
-      priority
-    />
+    <div className={`relative ${sizeClass} ${className} w-auto flex items-center justify-center`}>
+      {/* Light Mode Logo (Original Blue) */}
+      <Image
+        src="/logo.png"
+        alt="The Catalysts Group"
+        width={width}
+        height={height}
+        className={`object-contain w-full h-full block dark:hidden`}
+        priority
+      />
+      {/* Dark Mode Logo (White silhouette) */}
+      <Image
+        src="/logo-white.png"
+        alt="The Catalysts Group"
+        width={width}
+        height={height}
+        className={`object-contain w-full h-full hidden dark:block`}
+        priority
+      />
+    </div>
   );
 }
