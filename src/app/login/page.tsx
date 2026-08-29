@@ -65,21 +65,21 @@ export default function LoginPage() {
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="w-full max-w-md space-y-8">
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1, duration: 0.4 }} className="text-center">
-          <div className="flex items-center justify-center gap-3 mb-4">
+          
+          <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text mb-4">Capturing Event Lead</h1>
+          <div className="flex justify-center mb-4">
             <BrandLogo size="md" />
           </div>
-          <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">Capturing Event Lead</h1>
-          <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mt-2">The Catalysts Group</p>
-          <p className="text-sm text-muted-foreground mt-2">Sign in to your account</p>
+          <p className="text-sm text-muted-foreground">Sign in to your account</p>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.5 }}>
           <Card className="shadow-2xl border-border/60 backdrop-blur-md w-full overflow-visible">
             <CardContent className="p-6 sm:p-8">
               <Tabs defaultValue="staff" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 mb-6 rounded-xl p-1 bg-muted/50">
-                  <TabsTrigger value="staff" className="gap-2 py-2.5 rounded-lg text-sm font-semibold data-[state=active]:shadow-none"><UserCircle className="w-4 h-4" /> Staff Login</TabsTrigger>
-                  <TabsTrigger value="admin" className="gap-2 py-2.5 rounded-lg text-sm font-semibold data-[state=active]:shadow-none"><ShieldCheck className="w-4 h-4" /> Admin Login</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-2 mb-6 rounded-xl p-1 bg-transparent">
+                  <TabsTrigger value="staff" className="gap-2 py-2.5 rounded-lg text-sm font-semibold "><UserCircle className="w-4 h-4" /> Staff Login</TabsTrigger>
+                  <TabsTrigger value="admin" className="gap-2 py-2.5 rounded-lg text-sm font-semibold "><ShieldCheck className="w-4 h-4" /> Admin Login</TabsTrigger>
                 </TabsList>
 
                 
