@@ -15,25 +15,13 @@ export function BrandLogo({ size = "md", className = "" }: BrandLogoProps) {
   const { width, height, className: sizeClass } = sizeMap[size];
 
   return (
-    <div className={`relative ${sizeClass} ${className} w-auto flex items-center justify-center`}>
-      {/* Light Mode Logo */}
-      <Image
-        src="/logo.png"
-        alt="The Catalysts Group"
-        width={width}
-        height={height}
-        className={`object-contain w-full h-full block dark:hidden`}
-        priority
-      />
-      {/* Dark Mode Logo (Black background generated dynamically) */}
-      <Image
-        src="/logo-dark.png"
-        alt="The Catalysts Group"
-        width={width}
-        height={height}
-        className={`object-contain w-full h-full hidden dark:block`}
-        priority
-      />
-    </div>
+    <Image
+      src="/logo.png"
+      alt="The Catalysts Group"
+      width={width}
+      height={height}
+      className={`object-contain ${sizeClass} w-auto transition-all duration-300 dark:brightness-0 dark:invert ${className}`}
+      priority
+    />
   );
 }
