@@ -20,7 +20,7 @@ export function BrandLogo({ size = "md", className = "" }: BrandLogoProps) {
       alt="The Catalysts Group"
       width={width}
       height={height}
-      className={`object-contain ${sizeClass} w-auto dark:bg-white transition-colors duration-300 ${className}`}
+      className={`object-contain ${sizeClass} w-auto transition-colors duration-300 ${className}`}
       priority
     />
   );
