@@ -1,9 +1,9 @@
 import Image from "next/image";
 
 const sizeMap = {
-  sm: { width: 120, height: 72, className: "h-9" },
-  md: { width: 180, height: 108, className: "h-16" },
-  lg: { width: 247, height: 148, className: "h-24 lg:h-28" },
+  sm: { width: 120, height: 72, className: "h-6 sm:h-8" },
+  md: { width: 160, height: 96, className: "h-10 sm:h-12" },
+  lg: { width: 200, height: 120, className: "h-14 sm:h-20" },
 };
 
 interface BrandLogoProps {
@@ -20,7 +20,7 @@ export function BrandLogo({ size = "md", className = "" }: BrandLogoProps) {
       alt="The Catalysts Group"
       width={width}
       height={height}
-      className={`object-contain ${sizeClass} w-auto dark:invert dark:brightness-[2] transition-[filter] duration-300 ${className}`}
+      className={`object-contain ${sizeClass} w-auto dark:bg-white transition-colors duration-300 ${className}`}
       priority
     />
   );
