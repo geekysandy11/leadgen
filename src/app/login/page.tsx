@@ -60,13 +60,13 @@ export default function LoginPage() {
   if (checkingSession) return (<main className="min-h-dvh bg-background flex items-center justify-center"><div className="spinner w-10 h-10" /></main>);
 
   return (
-    <main className="min-h-dvh bg-background text-foreground flex flex-col items-center justify-center px-5 py-12 relative">
+    <main className="min-h-dvh bg-background text-foreground flex flex-col p-5 relative overflow-y-auto">
       <div className="absolute top-4 right-4"><ThemeToggle /></div>
 
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="w-full max-w-md space-y-8">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="w-full max-w-md mx-auto my-auto space-y-8 py-10">
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1, duration: 0.4 }} className="text-center">
           
-          <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text mb-4">Capturing Event Lead</h1>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground mb-4 px-2 leading-tight">Capturing Event Lead</h1>
           <div className="flex justify-center mb-4">
             <BrandLogo size="md" />
           </div>
